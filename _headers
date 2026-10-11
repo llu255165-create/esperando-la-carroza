@@ -1,0 +1,7 @@
+# Cabeceras de seguridad. Funciona en Netlify y Cloudflare Pages (se ignora en otros hosts, sin efecto).
+# frame-ancestors no se puede poner en la etiqueta <meta> del HTML: solo funciona como cabecera.
+/*
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
