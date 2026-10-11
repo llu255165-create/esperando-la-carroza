@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- form-action 'none': si el JS no cargara, el formulario no enviaría nombre y correo por la URL.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formsubmit.co; form-action 'none'; base-uri 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-2ZsyqTz1gL07xtWf6gPc1IxEMKC8XBpDnVPGUkbFN/g='; style-src 'self' 'sha256-GXeDaDBi8qNOuWo60JCOHZyGri0/1SYf2H4ntLRhpTw=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formsubmit.co; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
   <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 12:00, en la Escuela Técnica Canelones. Entrada gratuita.">
@@ -27,7 +27,7 @@
        Se cargan sin bloquear el primer render. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..400;1,9..144,300..400&family=Manrope:wght@400..600&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..400;1,9..144,300..400&family=Manrope:wght@400..600&display=swap" media="print">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..400;1,9..144,300..400&family=Manrope:wght@400..600&display=swap"></noscript>
 
   <style>
@@ -457,6 +457,8 @@ html:not(.js) .count{display:none}
 .step b{display:block;margin-bottom:14px;font:italic 300 4rem/1 var(--serif);color:var(--gold)}
 .step h3{margin-bottom:8px;font:400 1.5rem/1.2 var(--serif)}
 .step p{font-size:1rem;color:var(--ivory-body)}
+.step:nth-child(2){--d:.12s}
+.step:nth-child(3){--d:.24s}
 
 
 /* 11 · PREGUNTAS ----------------------------------------------------------- */
@@ -505,23 +507,31 @@ details a{color:var(--velvet);text-decoration:underline;text-underline-offset:3p
 .form{display:grid;gap:18px;max-width:440px;margin:0 auto;text-align:left}
 .field{display:grid;gap:8px}
 .field label{font-size:.875rem;font-weight:600;color:var(--ivory-2)}
-.field input{
+.field input,
+.field select{
   width:100%;min-height:56px;padding:16px 18px;
   font:400 1.0625rem var(--sans);color:var(--ivory);caret-color:var(--gold);
-  background:rgba(243,234,217,.07);
+  background-color:rgba(243,234,217,.07);
   border:1px solid rgba(217,171,85,.55);          /* ≥3:1 contra el fondo (antes .3) */
   border-radius:var(--radius-field);
   -webkit-appearance:none;appearance:none;
   transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;
 }
 .field input::placeholder{color:rgba(243,234,217,.62)}
-@media (hover:hover){.field input:hover{border-color:rgba(217,171,85,.8)}}
-.field input:focus{
+@media (hover:hover){.field input:hover,.field select:hover{border-color:rgba(217,171,85,.8)}}
+.field input:focus,
+.field select:focus{
   outline:2px solid transparent;            /* visible en modo de alto contraste */
-  border-color:var(--gold);background:rgba(243,234,217,.12);
+  border-color:var(--gold);background-color:rgba(243,234,217,.12);
   box-shadow:0 0 0 4px rgba(217,171,85,.18);
 }
-.field input[aria-invalid="true"]{border-color:var(--error)}
+.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:var(--error)}
+.field select{
+  padding-right:48px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23d9ab55' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center;background-size:14px 9px;
+}
+.field select option{background:var(--wine-deep);color:var(--ivory)}
 .field-error{font-size:.875rem;color:var(--error)}
 /* El autocompletado del navegador no pinta de azul/blanco los campos */
 .field input:-webkit-autofill{-webkit-text-fill-color:var(--ivory);box-shadow:0 0 0 1000px #38161b inset}
@@ -548,6 +558,7 @@ details a{color:var(--velvet);text-decoration:underline;text-underline-offset:3p
 .ok-title:focus{outline:none}
 .ok-note{margin-top:10px;font-size:.9375rem;color:var(--ivory-3)}
 .ok-actions{display:grid;gap:12px;margin-top:24px}
+.ok-again + .ok-again{margin-top:2px}
 .ok-again{
   margin-top:18px;padding:10px 6px;border:0;background:none;cursor:pointer;
   font-size:.9375rem;font-weight:600;color:var(--gold);
@@ -587,8 +598,9 @@ footer{
 }
 .foot-brand{margin-bottom:6px;font:italic 400 1.375rem var(--serif);color:var(--ivory)}
 .fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 20px;margin-top:14px}
-.fnav a{padding:11px 4px}
-@media (hover:hover){.fnav a:hover{color:var(--gold-2)}}
+.fnav a,.fnav button{padding:11px 4px}
+.fnav button{border:0;background:none;cursor:pointer}
+@media (hover:hover){.fnav a:hover,.fnav button:hover{color:var(--gold-2)}}
 
 /* Botón fijo: solo móvil. El orden importa: .btn.sticky-cta debe ir después de .btn */
 .btn.sticky-cta{display:none}
@@ -687,7 +699,18 @@ footer{
   details::details-content{transition:none}
 }
 
+/* Ficha para imprimir o guardar en PDF: en pantalla no existe; al imprimir es lo único que se ve */
+.ficha{display:none}
 @media print{
+  @page{margin:16mm}
+  html,body{background:#fff!important;color:#000!important}
+  body>*:not(.ficha){display:none!important}
+  .ficha{display:block;max-width:560px;margin:0 auto;padding:36px 28px;border:2px solid #000;border-radius:16px;text-align:center;color:#000;font:400 13pt/1.5 var(--sans)}
+  .ficha-kicker{margin:0 0 8px;font-size:11pt;letter-spacing:.14em;text-transform:uppercase}
+  .ficha-title{margin:0 0 22px;font:italic 400 30pt/1.1 var(--serif)}
+  .ficha-line{margin:0 0 10px}
+  .ficha-line b{display:block;font-size:11pt;letter-spacing:.1em;text-transform:uppercase}
+  .ficha-note{margin:22px 0 0;font-size:11pt}
   .curtain,.progress,.topbar,.marquee,.sticky-cta,.skip-link,.hero>canvas{display:none!important}
   .js .rv,.kicker,.hero-title,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
 }
@@ -743,7 +766,10 @@ footer{
     · Fecha, hora y lugar: aparecen en el HTML (portada, ticket, preguntas, pie), en el JSON-LD del <head>
       y en la constante EVENTO del <script> (calendario y cuenta regresiva).
     · Colores, radios y espaciados: variables al comienzo del CSS (:root).
-    · Reservas: constante ENDPOINT en la sección 9 del <script>.
+    · Reservas: constantes ENDPOINT y WHATSAPP_CONTACTO (plan B si falla el envío) en la sección 9 del <script>.
+    · Seguridad: la política CSP del <head> usa «hashes» del <style> y de los <script>. Si editás a mano alguno de
+      esos bloques, corré «python3 actualizar-csp.py» (o pedile a Claude que lo recalcule); si no, el navegador
+      bloquea el bloque editado y la web deja de funcionar.
     · Todo lo que dependa de que reserven lleva data-reserva: se oculta solo cuando empieza la función.
   -->
 
@@ -844,9 +870,9 @@ footer{
       <div class="in">
         <h2 class="section-title rv">Confirmar es simple</h2>
         <ol class="steps" role="list">
-          <li class="step rv"><b aria-hidden="true">1</b><h3>Completá tus datos</h3><p>Nombre y apellido. El correo es opcional.</p></li>
-          <li class="step rv" style="--d:.12s"><b aria-hidden="true">2</b><h3>Confirmá tu asistencia</h3><p>Llevamos el registro de quienes van a asistir.</p></li>
-          <li class="step rv" style="--d:.24s"><b aria-hidden="true">3</b><h3>Vení a la función</h3><p>Viernes 6 de noviembre, 12:00, en la Escuela Técnica Canelones.</p></li>
+          <li class="step rv"><b aria-hidden="true">1</b><h3>Completá tus datos</h3><p>Nombre, apellido y cuántas personas van. El correo es opcional.</p></li>
+          <li class="step rv"><b aria-hidden="true">2</b><h3>Confirmá tu asistencia</h3><p>Llevamos el registro de quienes van a asistir.</p></li>
+          <li class="step rv"><b aria-hidden="true">3</b><h3>Vení a la función</h3><p>Viernes 6 de noviembre, 12:00, en la Escuela Técnica Canelones.</p></li>
         </ol>
       </div>
     </section>
@@ -867,7 +893,7 @@ footer{
     <section class="reserve" id="reservar">
       <div class="reserve-open">
         <h2 class="section-title rv" id="reserva-titulo">Confirmá tu asistencia</h2>
-        <p class="lead">Dejanos tu nombre y apellido para saber cuántas personas van a asistir.</p>
+        <p class="lead">Dejanos tu nombre y apellido, y cuántas personas van, para saber cuánta gente asiste.</p>
         <p class="note">Se agradece no tomar fotos durante la función.</p>
 
         <noscript><p class="form-msg err">Para confirmar tu asistencia necesitás activar JavaScript en tu navegador.</p></noscript>
@@ -888,25 +914,45 @@ footer{
             <p class="field-error" id="apellido-error" hidden></p>
           </div>
           <div class="field">
+            <label for="personas">¿Cuántas personas van? (contándote a vos)</label>
+            <select id="personas" name="personas" required>
+              <option value="1" selected>1 persona (solo yo)</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+              <option value="6">6 personas</option>
+              <option value="7">7 personas</option>
+              <option value="8">8 personas</option>
+              <option value="9">9 personas</option>
+              <option value="10">10 personas</option>
+            </select>
+            <p class="field-error" id="personas-error" hidden></p>
+          </div>
+          <div class="field">
             <label for="correo">Correo (opcional)</label>
             <input id="correo" type="email" inputmode="email" name="email" placeholder="tunombre@gmail.com" autocomplete="email" autocapitalize="off" enterkeyhint="send" spellcheck="false" maxlength="80">
             <p class="field-error" id="correo-error" hidden></p>
           </div>
 
           <p id="msg" class="form-msg" role="status"></p>
+          <a id="planb" class="btn btn--line btn--sm" href="#" target="_blank" rel="noopener noreferrer" hidden>Avisarnos por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
           <button id="enviar" class="btn btn--gold" type="submit">Confirmar asistencia</button>
           <p class="priv">Usamos tu nombre solo para llevar la cuenta de asistentes. Si dejás tu correo, es únicamente para avisarte si hay cambios. Los borramos después de la función.</p>
         </form>
 
         <div id="ok" class="ok" hidden>
           <h3 id="okTitulo" class="ok-title" tabindex="-1">¡Listo!</h3>
-          <p>Tu asistencia quedó confirmada. Te esperamos el viernes 6 de noviembre a las 12:00.</p>
+          <p>Anotamos <b id="okPersonas"></b>. Te esperamos el viernes 6 de noviembre a las 12:00.</p>
+          <p class="ok-note">Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p>
           <p class="ok-note" id="okNota" hidden>Cualquier cambio te lo avisamos a <b id="okMail"></b>.</p>
           <div class="ok-actions">
             <button class="btn btn--gold btn--sm" type="button" data-calendar>Agregar al calendario</button>
+            <a class="btn btn--line btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Jos%C3%A9%20Enrique%20Rod%C3%B3%20614%2C%20Canelones%2C%20Uruguay" target="_blank" rel="noopener noreferrer">Cómo llegar<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
             <a id="wa" class="btn btn--line btn--sm" href="#" target="_blank" rel="noopener noreferrer">Compartir por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
           </div>
           <button id="otra" class="ok-again" type="button">Confirmar otra asistencia</button>
+          <button class="ok-again" type="button" data-print>Imprimir o guardar la ficha</button>
         </div>
       </div>
 
@@ -929,6 +975,15 @@ footer{
     </div>
   </dialog>
 
+  <div class="ficha">
+    <p class="ficha-kicker">Comedia · Entrada gratuita</p>
+    <p class="ficha-title">Esperando la carroza</p>
+    <p class="ficha-line"><b>Fecha</b>Viernes 6 de noviembre de 2026</p>
+    <p class="ficha-line"><b>Hora</b>12:00</p>
+    <p class="ficha-line"><b>Lugar</b>Escuela Técnica Canelones<br>José Enrique Rodó 614, Canelones, Uruguay</p>
+    <p class="ficha-note">Se agradece no tomar fotos durante la función.</p>
+  </div>
+
   <a class="btn btn--gold sticky-cta" id="sticky" href="#reservar" data-reserva>Confirmar mi asistencia</a>
 
   <footer>
@@ -940,6 +995,7 @@ footer{
       <a href="#lugar">Dónde es</a>
       <a href="#preguntas">Preguntas</a>
       <a href="#reservar" data-reserva>Confirmar asistencia</a>
+      <button type="button" data-print>Imprimir ficha</button>
     </nav>
   </footer>
 
@@ -969,6 +1025,12 @@ footer{
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasIO = 'IntersectionObserver' in window;
+
+  /* Tipografías: se piden sin bloquear la primera pantalla (sin atributo onload, que la política de seguridad no admite) */
+  $$('link[rel="stylesheet"][media="print"]').forEach(l => {
+    const abrir = () => { l.media = 'all'; };
+    if (l.sheet) abrir(); else l.addEventListener('load', abrir, { once: true });
+  });
 
 
   /* 1 · Intro ---------------------------------------------------------------
@@ -1211,28 +1273,36 @@ footer{
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
     $$('[data-calendar]').forEach(b => b.addEventListener('click', descargar));
+    $$('[data-print]').forEach(b => b.addEventListener('click', () => window.print()));
   })();
 
 
   /* 9 · Reserva --------------------------------------------------------------- */
   (() => {
-    const form = $('#reserva'), msg = $('#msg'), btn = $('#enviar'), ok = $('#ok'), aviso = $('#aviso');
+    const form = $('#reserva'), msg = $('#msg'), btn = $('#enviar'), ok = $('#ok'), aviso = $('#aviso'), planB = $('#planb');
     if (!form) return;
     const ENDPOINT = 'https://formsubmit.co/ajax/43a6317c64153ef108fb3d56a243e180';
-    const CAMPOS = ['nombre', 'apellido', 'correo'];     // el correo es opcional: solo se valida si lo escriben
+    // Plan B si el envío falla: WhatsApp de la organización, con código de país y sin signos (ej.: '59899123456').
+    // Vacío = no se muestra el botón.
+    const WHATSAPP_CONTACTO = '';
+    const CAMPOS = ['nombre', 'apellido', 'personas', 'correo'];   // el correo es opcional: solo se valida si lo escriben
+    const MAX_PERSONAS = 10;
+    const MAX_REGISTROS = 10;          // registros por dispositivo
     const AVISO = 'Este registro es solo para saber cuántas personas van a asistir. No da ningún beneficio ni ventaja.';
     const el = id => document.getElementById(id);
     const abierto = Date.now();
     let enviando = false;
 
-    /* Validación y moderación de nombres */
-    const PALABRAS = ['puta', 'puto', 'putas', 'putos', 'putita', 'putito', 'pija', 'pijas', 'pijudo', 'verga', 'vergas', 'culo', 'culos', 'culiao', 'culiado', 'chota', 'choto', 'mierda', 'mierdas', 'carajo', 'joder', 'jodido', 'jodida', 'gilipollas', 'gilipolla', 'boludo', 'boluda', 'pelotudo', 'pelotuda', 'hijoputa', 'hijueputa', 'maricon', 'marica', 'zorra', 'corrupto'];
-    const FRAGMENTOS = ['pelotud', 'boludo', 'mierda', 'hijoputa', 'hijodeputa', 'hijueputa', 'conchadetu', 'conchatu', 'conchetu', 'chupapij', 'malparid', 'gilipoll', 'cojud', 'culiad', 'culiao', 'mamaguev', 'carajo'];
+    /* Moderación de nombres: se bloquean los insultos claros; las palabras dudosas se aceptan pero se marcan para revisar */
+    const BLOQUEAR = ['puta', 'puto', 'putas', 'putos', 'putita', 'putito', 'pija', 'pijas', 'pijudo', 'verga', 'vergas', 'chota', 'choto', 'culiao', 'culiado', 'gilipollas', 'gilipolla', 'boludo', 'boluda', 'pelotudo', 'pelotuda', 'hijoputa', 'hijueputa', 'maricon'];
+    const FRAGMENTOS = ['pelotud', 'boludo', 'hijoputa', 'hijodeputa', 'hijueputa', 'conchadetu', 'conchatu', 'conchetu', 'chupapij', 'malparid', 'gilipoll', 'cojud', 'culiad', 'culiao', 'mamaguev'];
+    const DUDOSAS = ['culo', 'culos', 'mierda', 'mierdas', 'carajo', 'joder', 'jodido', 'jodida', 'zorra', 'marica', 'corrupto'];
     const NOMBRE_RE = /^\p{L}[\p{L}\s'’.-]{1,39}$/u;
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const LEET = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '@': 'a', '$': 's', '!': 'i', '|': 'i', '+': 't' };
     const reduc = w => w.replace(/(.)\1+/g, '$1');            // "puuuta" → "puta"
-    const SET = new Set(PALABRAS.map(reduc));                  // se calcula una vez, no en cada envío
+    const FUERTES = new Set(BLOQUEAR.map(reduc));              // se calculan una vez, no en cada envío
+    const SOSPECHOSAS = new Set(DUDOSAS.map(reduc));
     const FRAGS = FRAGMENTOS.map(reduc);
 
     const limpiar = t => t.toLowerCase()
@@ -1240,17 +1310,24 @@ footer{
       .replace(/[013457@$!|+]/g, c => LEET[c])
       .replace(/[^a-zñ\s]/g, ' ');
 
-    function soez(texto) {
+    // 2 = bloquear, 1 = dudosa (se acepta y se marca), 0 = limpia
+    function nivelSoez(texto) {
       const t = limpiar(texto).replace(/\s+/g, ' ').trim();
       // "concha tu…" solo si "tu" es una palabra (no bloquea apellidos como Tudela o Turner)
-      if (/concha\s*(de\s*)?tu(\s|$|ma|ya)/.test(t)) return true;
+      if (/concha\s*(de\s*)?tu(\s|$|ma|ya)/.test(t)) return 2;
       const unidas = []; let buf = '';
       t.split(' ').forEach(w => {                              // junta letras sueltas: "p u t a"
         if (w.length === 1) buf += w;
         else { if (buf) { unidas.push(buf); buf = ''; } if (w) unidas.push(w); }
       });
       if (buf) unidas.push(buf);
-      return unidas.some(w => { const r = reduc(w); return SET.has(r) || FRAGS.some(f => r.includes(f)); });
+      let dudosa = false;
+      for (const w of unidas) {
+        const r = reduc(w);
+        if (FUERTES.has(r) || FRAGS.some(f => r.includes(f))) return 2;
+        if (SOSPECHOSAS.has(r)) dudosa = true;
+      }
+      return dudosa ? 1 : 0;
     }
 
     const arreglar = v => {                                    // "juan PEREZ" → "Juan Perez"
@@ -1259,6 +1336,21 @@ footer{
         v = v.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
       }
       return v;
+    };
+
+    /* Registros de este dispositivo: evita anotar dos veces a la misma persona y limita los envíos repetidos */
+    const LISTA = 'rv_lista';
+    const leerLista = () => {
+      try { const l = JSON.parse(localStorage.getItem(LISTA) || '[]'); return Array.isArray(l) ? l : []; }
+      catch (e) { return []; }
+    };
+    const claveNombre = (n, a) => 'n:' + limpiar(n + ' ' + a).replace(/\s+/g, '');
+    const claveCorreo = c => 'e:' + c.toLowerCase();
+    const guardarRegistro = (n, a, c) => {
+      try {
+        const l = leerLista(); l.push(claveNombre(n, a)); if (c) l.push(claveCorreo(c));
+        localStorage.setItem(LISTA, JSON.stringify(l));
+      } catch (e) { /* sin almacenamiento */ }
     };
 
     /* Estado de la interfaz */
@@ -1282,6 +1374,7 @@ footer{
       form.setAttribute('aria-busy', String(si));
     };
     CAMPOS.forEach(id => el(id).addEventListener('input', () => desmarcar(id)));
+    el('personas').addEventListener('change', () => desmarcar('personas'));
 
     function confeti(caja) {
       if (reduceMotion) return;
@@ -1297,18 +1390,30 @@ footer{
       caja.appendChild(frag);
     }
 
-    function exito(nombre, correo) {
+    function exito(nombre, apellido, personas, correo) {
       try { localStorage.setItem('rv_ult', String(Date.now())); } catch (e) { /* sin almacenamiento */ }
+      guardarRegistro(nombre, apellido, correo);
       el('okTitulo').textContent = `¡Listo, ${nombre}!`;
+      el('okPersonas').textContent = personas === 1 ? 'a 1 persona' : `a ${personas} personas`;
       el('okMail').textContent = correo;
       el('okNota').hidden = !correo;
       el('wa').href = 'https://wa.me/?text=' + encodeURIComponent(
         `${EVENTO.nombre}, comedia. Viernes 6 de noviembre, 12:00. Entrada gratuita. Confirmá tu asistencia: ${location.href.split('#')[0]}`
       );
+      planB.hidden = true;
       form.hidden = true;
       ok.hidden = false;
       confeti(ok);
       el('okTitulo').focus();           // el foco no se pierde cuando desaparece el botón de envío
+    }
+
+    // Plan B: si el envío falla y hay un WhatsApp configurado, ofrece mandar los mismos datos por ahí
+    function mostrarPlanB(nombre, apellido, personas, correo) {
+      const num = String(WHATSAPP_CONTACTO).replace(/\D/g, '');
+      if (!num) return;
+      const texto = `Hola, quiero confirmar mi asistencia a ${EVENTO.nombre}. Nombre: ${nombre} ${apellido}. Personas: ${personas}.` + (correo ? ` Correo: ${correo}.` : '');
+      planB.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(texto);
+      planB.hidden = false;
     }
 
     form.addEventListener('submit', e => {
@@ -1317,16 +1422,25 @@ footer{
 
       CAMPOS.forEach(desmarcar);
       decir('');
+      planB.hidden = true;
       let nombre = el('nombre').value.trim(), apellido = el('apellido').value.trim();
+      const personasTxt = el('personas').value.trim(), personas = Number(personasTxt);
       const correo = el('correo').value.trim();
 
       // 1) Errores por campo, con el mensaje debajo de cada uno
       const errores = {};
+      let revisar = false;
       [['nombre', nombre], ['apellido', apellido]].forEach(([id, v]) => {
         if (!v) errores[id] = `Escribí tu ${id}.`;
         else if (!NOMBRE_RE.test(v)) errores[id] = 'Usá solo letras (mínimo 2).';
-        else if (soez(v)) errores[id] = 'Hay palabras que no están permitidas. Escribí tus datos reales, por favor.';
+        else {
+          const n = nivelSoez(v);
+          if (n === 2) errores[id] = 'Hay palabras que no están permitidas. Escribí tus datos reales, por favor.';
+          else if (n === 1) revisar = true;
+        }
       });
+      if (!personasTxt) errores.personas = 'Elegí cuántas personas van, contándote a vos.';
+      else if (!Number.isInteger(personas) || personas < 1 || personas > MAX_PERSONAS) errores.personas = `Elegí un número de 1 a ${MAX_PERSONAS}. Si son más, hacé otro registro a nombre de otra persona.`;
       if (correo && !EMAIL_RE.test(correo)) errores.correo = 'Revisá tu correo: tiene que ser una dirección válida, por ejemplo nombre@gmail.com. Si preferís, dejalo vacío.';
       const primero = CAMPOS.find(id => errores[id]);
       if (primero) {
@@ -1335,7 +1449,24 @@ footer{
         return;
       }
 
-      // 2) Anti-spam (recién después de validar, para que los errores del formulario siempre se vean primero)
+      // 2) Repetidos y límite por dispositivo
+      const lista = leerLista();
+      if (lista.filter(k => k.startsWith('n:')).length >= MAX_REGISTROS) {
+        decir('Ya hiciste varios registros desde este dispositivo. Si vienen más personas, sumalas en «¿Cuántas personas van?».', true);
+        return;
+      }
+      if (lista.includes(claveNombre(nombre, apellido))) {
+        marcar('apellido', `Ya anotamos a ${arreglar(nombre)} ${arreglar(apellido)} desde este dispositivo. Si es otra persona con el mismo nombre, agregá una inicial al apellido.`);
+        el('apellido').focus();
+        return;
+      }
+      if (correo && lista.includes(claveCorreo(correo))) {
+        marcar('correo', 'Ese correo ya se usó en otro registro desde este dispositivo. Si es otra persona, dejalo vacío.');
+        el('correo').focus();
+        return;
+      }
+
+      // 3) Anti-spam (recién después de validar, para que los errores del formulario siempre se vean primero)
       if (Date.now() - abierto < 3000) { decir('Esperá un segundo y volvé a tocar «Confirmar asistencia».', true); return; }
       try {
         if (Date.now() - (+localStorage.getItem('rv_ult') || 0) < 60000) {
@@ -1344,9 +1475,9 @@ footer{
         }
       } catch (err) { /* sin almacenamiento */ }
 
-      // 3) Cartelito de aviso: recién al aceptar se envía
+      // 4) Cartelito de aviso: recién al aceptar se envía
       nombre = arreglar(nombre); apellido = arreglar(apellido);
-      pedirAviso(() => enviar(nombre, apellido, correo));
+      pedirAviso(() => enviar(nombre, apellido, personas, correo, revisar));
     });
 
     function pedirAviso(alAceptar) {
@@ -1367,35 +1498,37 @@ footer{
       aviso.addEventListener('click', e => { if (e.target === aviso) aviso.close('no'); });   // clic en el fondo
     }
 
-    // 4) Envío, con tiempo máximo para no quedar eternamente en "Enviando…"
-    function enviar(nombre, apellido, correo) {
+    // 5) Envío, con tiempo máximo para no quedar eternamente en "Enviando…"
+    function enviar(nombre, apellido, personas, correo, revisar) {
       ocupado(true);
+      const datos = { nombre, apellido, personas };
+      if (correo) datos.email = correo;                         // el correo viaja solo si lo escribieron
+      if (revisar) datos.revisar = 'Nombre con una palabra dudosa: conviene revisarlo';
+      Object.assign(datos, { _subject: 'Asistencia: Esperando la carroza', _template: 'table', _captcha: 'false' });
       const ctrl = new AbortController();
       const corte = setTimeout(() => ctrl.abort(), 15000);
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(Object.assign(
-          { nombre, apellido },
-          correo ? { email: correo } : {},                       // el correo viaja solo si lo escribieron
-          { _subject: 'Asistencia: Esperando la carroza', _template: 'table', _captcha: 'false' }
-        )),
+        body: JSON.stringify(datos),
         signal: ctrl.signal
       })
         .then(r => r.json().catch(() => ({})).then(d => ({ bien: r.ok, d })))
         .then(({ bien, d }) => {
           if (!(bien && (d.success === true || d.success === 'true'))) throw new Error('fail');
-          exito(nombre, correo);
+          exito(nombre, apellido, personas, correo);
         })
-        .catch(() => {
-          // Antes decía "quedó guardada para reintentar", pero nada la reintentaba: ahora el mensaje es honesto
-          decir('No pudimos confirmar tu asistencia. Probá de nuevo en unos segundos; tus datos siguen en el formulario.', true);
+        .catch(err => {
+          if (!navigator.onLine) decir('No tenés conexión a internet. Cuando vuelva, tocá de nuevo «Confirmar asistencia»; tus datos siguen en el formulario.', true);
+          else if (err && err.name === 'AbortError') decir('Tardó demasiado en responder. Probá de nuevo en unos segundos; tus datos siguen en el formulario.', true);
+          else decir('No pudimos confirmar tu asistencia. Probá de nuevo en unos segundos; tus datos siguen en el formulario.', true);
+          mostrarPlanB(nombre, apellido, personas, correo);
         })
         .finally(() => { clearTimeout(corte); ocupado(false); });
     }
 
     el('otra').addEventListener('click', () => {      // varias personas pueden reservar desde un mismo dispositivo
-      ok.hidden = true; form.hidden = false; form.reset(); decir('');
+      ok.hidden = true; form.hidden = false; form.reset(); decir(''); planB.hidden = true;
       el('nombre').focus();
     });
   })();
