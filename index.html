@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <!-- form-action 'none': si el JS no cargara, el formulario no enviaría nombre y correo por la URL.
+  <!-- Esta página no tiene formularios ni envía datos a ningún servidor: connect-src 'none' y form-action 'none' lo impiden.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-2ZsyqTz1gL07xtWf6gPc1IxEMKC8XBpDnVPGUkbFN/g='; style-src 'self' 'sha256-GXeDaDBi8qNOuWo60JCOHZyGri0/1SYf2H4ntLRhpTw=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formsubmit.co; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-neq6xz64AlJu/nUAb9xtXdxgJi+qcEUXl5+DyajTw2E='; style-src 'self' 'sha256-kRlicBzjHYM9JhlNly2nEwYGH2kBB8cT03Yzw+5O8EM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
   <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 12:00, en la Escuela Técnica Canelones. Entrada gratuita.">
@@ -13,7 +13,7 @@
   <meta property="og:locale" content="es_UY">
   <meta property="og:site_name" content="Esperando la carroza">
   <meta property="og:title" content="Esperando la carroza — Comedia en el teatro">
-  <meta property="og:description" content="Viernes 6 de noviembre de 2026, 12:00, Escuela Técnica Canelones. Entrada gratuita. Confirmá tu asistencia.">
+  <meta property="og:description" content="Viernes 6 de noviembre de 2026, 12:00, Escuela Técnica Canelones. Entrada gratuita.">
   <meta name="twitter:card" content="summary">
   <!-- Para que WhatsApp, Instagram y otras apps muestren una imagen al compartir el enlace:
        subí una portada de 1200×630 px y activá estas líneas con la URL completa de tu sitio.
@@ -35,10 +35,10 @@
    ESPERANDO LA CARROZA · estilos
    --------------------------------------------------------------------------
     1. Tokens               6. Portada                 11. Preguntas
-    2. Base                 7. Botones                 12. Reserva
-    3. Utilidades           8. Cinta                   13. Pie y botón fijo
-    4. Intro y revelado     9. Función y lugar         14. Responsive
-    5. Barra superior      10. Cómo reservar           15. Preferencias del usuario
+    2. Base                 7. Botones                 12. Pie
+    3. Utilidades           8. Cinta                   13. Responsive
+    4. Intro y revelado     9. Función y lugar         14. Preferencias del usuario
+    5. Barra superior      10. Antes de ir
    ========================================================================== */
 
 
@@ -57,19 +57,17 @@
   /* Tintas derivadas: reemplazan ~10 marfiles y marrones casi idénticos que estaban sueltos */
   --wine-deep:#17040a;
   --ivory-2:#e6d6bb;   /* texto secundario sobre oscuro */
-  --ivory-body:#dccdb2;/* párrafos sobre tarjetas oscuras (pasos, introducción de la reserva) */
+  --ivory-body:#dccdb2;/* párrafos sobre fondos oscuros (sección Antes de ir) */
   --ivory-3:#c9b898;   /* texto terciario sobre oscuro */
   --ivory-4:#b8a58a;   /* pie de página */
   --ink-2:#4f3740;     /* texto de lectura sobre papel y marfil */
   --ink-3:#7a5a5e;     /* etiquetas sobre papel */
-  --error:#ffb4a2;
 
   /* Tipografía */
   --serif:'Fraunces',Georgia,'Times New Roman',serif;
   --sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 
   /* Forma, espacio y movimiento */
-  --radius-field:14px;
   --radius-chip:18px;
   --radius-card:24px;
   --radius-pill:999px;
@@ -115,7 +113,7 @@ main:focus{outline:none}
 ::selection{background:var(--gold);color:var(--ink)}
 a,button,summary{-webkit-tap-highlight-color:rgba(217,171,85,.22)}
 
-h1,h2,h3,.sub,.lead{text-wrap:balance}
+h1,h2,h3,.sub{text-wrap:balance}
 p,dd,summary{text-wrap:pretty}
 
 /* Foco visible: dorado sobre oscuro, vino sobre marfil/papel (el dorado no contrasta ahí) */
@@ -146,7 +144,7 @@ p,dd,summary{text-wrap:pretty}
 }
 
 /* Secciones: mismo ritmo vertical y márgenes laterales seguros */
-.band,.how,.faq,.reserve{
+.band,.info,.faq{
   padding-block:var(--section-y);
   padding-inline:var(--pl) var(--pr);
 }
@@ -224,7 +222,7 @@ p,dd,summary{text-wrap:pretty}
 .menu a.act{color:var(--gold-2)}
 .menu a.act::after{transform:scaleX(1)}
 
-.menu-btn{display:none}   /* solo en móvil, ver sección 14 */
+.menu-btn{display:none}   /* solo en móvil, ver sección 13 */
 
 @media (hover:hover){
   .menu a:hover{color:var(--gold-2)}
@@ -308,6 +306,7 @@ p,dd,summary{text-wrap:pretty}
   font:italic 300 clamp(1.875rem,5vw,3rem)/1.1 var(--serif);color:var(--gold-2);
 }
 html:not(.js) .count{display:none}
+html:not(.js) :is([data-calendar],[data-print]){display:none}   /* sin JS no hacen nada */
 
 .actions{
   display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:40px;
@@ -344,15 +343,6 @@ html:not(.js) .count{display:none}
   .btn--line:hover{background:rgba(243,234,217,.1);border-color:var(--ivory)}
 }
 .btn:active{transform:translateY(0) scale(.98)}
-
-/* Enviando: sigue enfocable (no usa disabled) y muestra un spinner */
-.btn[aria-disabled="true"]{opacity:.7;cursor:progress;transform:none;box-shadow:none}
-.btn.is-loading::before{
-  content:"";flex:none;width:1em;height:1em;
-  border:2px solid currentColor;border-right-color:transparent;border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
 
 
 /* 8 · CINTA ---------------------------------------------------------------- */
@@ -443,22 +433,17 @@ html:not(.js) .count{display:none}
 .map-copy .btn{align-self:flex-start}
 
 
-/* 10 · CÓMO RESERVAR ------------------------------------------------------- */
-.how{
+/* 10 · ANTES DE IR --------------------------------------------------------- */
+.info{
   background:radial-gradient(ellipse 70% 60% at 50% 0,rgba(110,17,36,.6),transparent 70%),var(--wine);
 }
-.how .section-title{margin:0 auto 48px;text-align:center}
-.steps{display:grid;gap:20px}
-.step{
-  padding:32px 28px;
-  border:1px solid rgba(217,171,85,.25);border-radius:var(--radius-card);
-  background:rgba(243,234,217,.05);
-}
-.step b{display:block;margin-bottom:14px;font:italic 300 4rem/1 var(--serif);color:var(--gold)}
-.step h3{margin-bottom:8px;font:400 1.5rem/1.2 var(--serif)}
-.step p{font-size:1rem;color:var(--ivory-body)}
-.step:nth-child(2){--d:.12s}
-.step:nth-child(3){--d:.24s}
+.info .section-title{margin-bottom:clamp(32px,5vw,56px)}
+
+/* Tres pautas en columnas, cada una con una línea fina arriba (como en un programa de mano) */
+.pautas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 clamp(28px,5vw,56px)}
+.pautas>div{padding-top:22px;border-top:1px solid rgba(217,171,85,.4)}
+.pautas dt{margin-bottom:10px;font:italic 300 1.625rem/1.2 var(--serif);color:var(--gold-2)}
+.pautas dd{max-width:38ch;font-size:1rem;color:var(--ivory-body)}
 
 
 /* 11 · PREGUNTAS ----------------------------------------------------------- */
@@ -495,102 +480,7 @@ details a{color:var(--velvet);text-decoration:underline;text-underline-offset:3p
 }
 
 
-/* 12 · RESERVA ------------------------------------------------------------- */
-.reserve{
-  position:relative;overflow:hidden;text-align:center;
-  background:radial-gradient(ellipse 70% 50% at 50% 0,rgba(110,17,36,.75),transparent 70%),var(--wine);
-}
-.reserve .section-title{margin-bottom:16px}
-.reserve .lead{max-width:46ch;margin:0 auto 12px;font-size:1.125rem;color:var(--ivory-body)}
-.note{margin-bottom:40px;font-size:.9375rem;color:var(--gold)}
-
-.form{display:grid;gap:18px;max-width:440px;margin:0 auto;text-align:left}
-.field{display:grid;gap:8px}
-.field label{font-size:.875rem;font-weight:600;color:var(--ivory-2)}
-.field input,
-.field select{
-  width:100%;min-height:56px;padding:16px 18px;
-  font:400 1.0625rem var(--sans);color:var(--ivory);caret-color:var(--gold);
-  background-color:rgba(243,234,217,.07);
-  border:1px solid rgba(217,171,85,.55);          /* ≥3:1 contra el fondo (antes .3) */
-  border-radius:var(--radius-field);
-  -webkit-appearance:none;appearance:none;
-  transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;
-}
-.field input::placeholder{color:rgba(243,234,217,.62)}
-@media (hover:hover){.field input:hover,.field select:hover{border-color:rgba(217,171,85,.8)}}
-.field input:focus,
-.field select:focus{
-  outline:2px solid transparent;            /* visible en modo de alto contraste */
-  border-color:var(--gold);background-color:rgba(243,234,217,.12);
-  box-shadow:0 0 0 4px rgba(217,171,85,.18);
-}
-.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:var(--error)}
-.field select{
-  padding-right:48px;cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23d9ab55' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 18px center;background-size:14px 9px;
-}
-.field select option{background:var(--wine-deep);color:var(--ivory)}
-.field-error{font-size:.875rem;color:var(--error)}
-/* El autocompletado del navegador no pinta de azul/blanco los campos */
-.field input:-webkit-autofill{-webkit-text-fill-color:var(--ivory);box-shadow:0 0 0 1000px #38161b inset}
-.field input:-webkit-autofill:focus{box-shadow:0 0 0 1000px #38161b inset,0 0 0 4px rgba(217,171,85,.18)}
-
-.form .btn{width:100%;margin-top:6px}
-.form-msg{min-height:22px;font-size:.9375rem;text-align:center;color:var(--ivory-2)}
-.form-msg.err{color:var(--error)}
-.priv{font-size:.8125rem;text-align:center;color:var(--ivory-3)}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}   /* señuelo anti-spam */
-
-/* Reserva enviada */
-.ok{
-  position:relative;overflow:hidden;
-  max-width:440px;margin:0 auto;padding:36px 28px;
-  border:1px solid rgba(217,171,85,.4);border-radius:var(--radius-card);
-  background:rgba(243,234,217,.06);
-  animation:rise .9s both;
-}
-.ok-title{
-  margin-bottom:12px;
-  font:italic 300 clamp(1.875rem,5vw,2.5rem)/1.1 var(--serif);color:var(--gold-2);
-}
-.ok-title:focus{outline:none}
-.ok-note{margin-top:10px;font-size:.9375rem;color:var(--ivory-3)}
-.ok-actions{display:grid;gap:12px;margin-top:24px}
-.ok-again + .ok-again{margin-top:2px}
-.ok-again{
-  margin-top:18px;padding:10px 6px;border:0;background:none;cursor:pointer;
-  font-size:.9375rem;font-weight:600;color:var(--gold);
-  text-decoration:underline;text-underline-offset:4px;
-}
-@media (hover:hover){.ok-again:hover{color:var(--gold-2)}}
-
-/* Cartelito de aviso antes de enviar */
-.aviso{
-  width:min(92vw,420px);margin:auto;padding:0;
-  border:1px solid rgba(217,171,85,.5);border-radius:var(--radius-card);
-  background:var(--wine-deep);color:var(--ivory);text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.55);
-}
-.aviso[open]{animation:rise .4s both}
-.aviso::backdrop{background:rgba(23,4,10,.74);backdrop-filter:blur(3px)}
-.aviso-in{padding:32px 28px}
-.aviso-title{margin:0 0 12px;font:italic 300 clamp(1.625rem,5vw,2rem)/1.1 var(--serif);color:var(--gold-2)}
-.aviso p{margin:0;font-size:1rem;line-height:1.55;color:var(--ivory-body)}
-.aviso-actions{display:grid;gap:12px;margin-top:24px}
-
-.cf{      /* confeti */
-  position:absolute;top:-14px;width:7px;height:12px;border-radius:2px;
-  opacity:0;pointer-events:none;animation:fall linear forwards;
-}
-@keyframes fall{
-  0%{opacity:1;transform:translateY(0) rotate(0)}
-  100%{opacity:0;transform:translateY(360px) rotate(540deg)}
-}
-
-
-/* 13 · PIE Y BOTÓN FIJO ---------------------------------------------------- */
+/* 12 · PIE ----------------------------------------------------------------- */
 footer{
   padding:36px var(--pr) calc(36px + env(safe-area-inset-bottom,0px)) var(--pl);
   border-top:1px solid rgba(217,171,85,.15);
@@ -602,13 +492,10 @@ footer{
 .fnav button{border:0;background:none;cursor:pointer}
 @media (hover:hover){.fnav a:hover,.fnav button:hover{color:var(--gold-2)}}
 
-/* Botón fijo: solo móvil. El orden importa: .btn.sticky-cta debe ir después de .btn */
-.btn.sticky-cta{display:none}
 
-
-/* 14 · RESPONSIVE ---------------------------------------------------------- */
-@media (min-width:861px){
-  .steps{grid-template-columns:repeat(3,minmax(0,1fr))}   /* en tablet quedaba 2+1 huérfano */
+/* 13 · RESPONSIVE ---------------------------------------------------------- */
+@media (max-width:860px){
+  .pautas{grid-template-columns:minmax(0,1fr);gap:28px}   /* una columna: tres quedarían muy angostas */
 }
 
 @media (max-width:820px){
@@ -630,16 +517,6 @@ footer{
   .ticket-data{gap:22px 16px}
   .location-card{grid-template-columns:minmax(0,1fr)}
   .map-box{min-height:190px}
-
-  .btn.sticky-cta{
-    display:flex;position:fixed;z-index:30;
-    left:max(16px,env(safe-area-inset-left,0px));
-    right:max(16px,env(safe-area-inset-right,0px));
-    bottom:calc(14px + env(safe-area-inset-bottom,0px));
-    transform:translateY(170%);visibility:hidden;      /* oculto también para teclado y lectores */
-    transition:transform .5s cubic-bezier(.2,.8,.2,1),visibility 0s .5s;
-  }
-  .btn.sticky-cta.on{transform:none;visibility:visible;transition-delay:0s}
 }
 
 @media (max-width:560px){
@@ -671,12 +548,6 @@ footer{
   .menu li+li{border-top:1px solid rgba(217,171,85,.18)}
   .menu a{width:100%;min-height:56px;font:italic 300 1.5rem var(--serif)}
   .menu a::after{display:none}
-  .menu li:last-child{padding-top:12px;border-top:0}
-  .menu .menu-cta,.menu .menu-cta.act{
-    justify-content:center;min-height:50px;border-radius:var(--radius-pill);
-    background:linear-gradient(180deg,var(--gold-2),var(--gold));
-    color:var(--ink);font:600 1rem var(--sans);
-  }
 }
 
 @media (max-height:720px){
@@ -684,7 +555,7 @@ footer{
 }
 
 
-/* 15 · PREFERENCIAS DEL USUARIO -------------------------------------------- */
+/* 14 · PREFERENCIAS DEL USUARIO -------------------------------------------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .curtain{display:none}
@@ -692,10 +563,7 @@ footer{
   .track{animation:none}
   .js .rv{opacity:1;transform:none;transition:none}
   .btn--gold::after{display:none}
-  .btn.is-loading::before{animation:none}
-  .ok,.aviso[open]{animation:none}
-  .cf{display:none}
-  .menu,.btn.sticky-cta{transition:none}
+  .menu{transition:none}
   details::details-content{transition:none}
 }
 
@@ -711,7 +579,7 @@ footer{
   .ficha-line{margin:0 0 10px}
   .ficha-line b{display:block;font-size:11pt;letter-spacing:.1em;text-transform:uppercase}
   .ficha-note{margin:22px 0 0;font-size:11pt}
-  .curtain,.progress,.topbar,.marquee,.sticky-cta,.skip-link,.hero>canvas{display:none!important}
+  .curtain,.progress,.topbar,.marquee,.skip-link,.hero>canvas{display:none!important}
   .js .rv,.kicker,.hero-title,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
 }
   </style>
@@ -766,11 +634,12 @@ footer{
     · Fecha, hora y lugar: aparecen en el HTML (portada, ticket, preguntas, pie), en el JSON-LD del <head>
       y en la constante EVENTO del <script> (calendario y cuenta regresiva).
     · Colores, radios y espaciados: variables al comienzo del CSS (:root).
-    · Reservas: constantes ENDPOINT y WHATSAPP_CONTACTO (plan B si falla el envío) en la sección 9 del <script>.
     · Seguridad: la política CSP del <head> usa «hashes» del <style> y de los <script>. Si editás a mano alguno de
       esos bloques, corré «python3 actualizar-csp.py» (o pedile a Claude que lo recalcule); si no, el navegador
       bloquea el bloque editado y la web deja de funcionar.
-    · Todo lo que dependa de que reserven lleva data-reserva: se oculta solo cuando empieza la función.
+    · Lo que solo sirve antes de la función lleva data-antes: se oculta solo cuando empieza.
+    · Esta página no tiene formularios ni guarda datos de nadie. Si algún día se agrega uno, hay que
+      abrir connect-src y form-action en la política CSP del <head>.
   -->
 
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -784,8 +653,8 @@ footer{
       <ul class="menu" id="menu">
         <li><a href="#funcion">Función</a></li>
         <li><a href="#lugar">Dónde es</a></li>
+        <li data-antes><a href="#antes">Antes de ir</a></li>
         <li><a href="#preguntas">Preguntas</a></li>
-        <li data-reserva><a class="menu-cta" href="#reservar">Confirmar</a></li>
       </ul>
     </nav>
   </header>
@@ -805,7 +674,7 @@ footer{
           <div class="cell" data-u="s"><b>--</b><span>seg</span></div>
         </div>
         <div class="actions">
-          <a class="btn btn--gold" href="#reservar" data-reserva>Confirmar mi asistencia</a>
+          <button class="btn btn--gold" type="button" data-calendar>Agregar al calendario</button>
           <a class="btn btn--line" href="#funcion">Ver la función</a>
         </div>
       </div>
@@ -845,7 +714,7 @@ footer{
           <div class="stub">
             <span class="stub-label">Entrada</span>
             <strong>Gratis</strong>
-            <p data-reserva>Confirmá con tu nombre y apellido.</p>
+            <p data-antes>Sin registro previo.</p>
             <button class="btn btn--line btn--sm" type="button" data-calendar>Agregar al calendario</button>
             <div class="bars" aria-hidden="true"></div>
           </div>
@@ -866,14 +735,23 @@ footer{
       </div>
     </section>
 
-    <section class="how" id="como" data-reserva>
+    <section class="info" id="antes" data-antes>
       <div class="in">
-        <h2 class="section-title rv">Confirmar es simple</h2>
-        <ol class="steps" role="list">
-          <li class="step rv"><b aria-hidden="true">1</b><h3>Completá tus datos</h3><p>Nombre, apellido y cuántas personas van. El correo es opcional.</p></li>
-          <li class="step rv"><b aria-hidden="true">2</b><h3>Confirmá tu asistencia</h3><p>Llevamos el registro de quienes van a asistir.</p></li>
-          <li class="step rv"><b aria-hidden="true">3</b><h3>Vení a la función</h3><p>Viernes 6 de noviembre, 12:00, en la Escuela Técnica Canelones.</p></li>
-        </ol>
+        <h2 class="section-title rv">Antes de ir</h2>
+        <dl class="pautas rv">
+          <div>
+            <dt>Ingreso</dt>
+            <dd>Entrada gratuita. No hace falta anotarse ni confirmar asistencia.</dd>
+          </div>
+          <div>
+            <dt>Fotos</dt>
+            <dd>Se agradece no tomar fotos durante la función, por respeto a quienes actúan y al resto del público.</dd>
+          </div>
+          <div>
+            <dt>Tus datos</dt>
+            <dd>Esta página no pide ni guarda datos personales: no hay registro, cuentas ni formularios.</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
@@ -884,96 +762,13 @@ footer{
           <details><summary>¿Cuánto cuesta la entrada?</summary><p>Nada. La entrada es gratuita.</p></details>
           <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026 a las 12:00, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
           <details><summary>¿Cómo llego?</summary><p>En la sección <a href="#lugar">¿Dónde es?</a> tocá «Cómo llegar» y se abre en tu aplicación de mapas.</p></details>
-          <details><summary>¿Para qué piden mis datos?</summary><p>Solo para saber cuántas personas van a asistir. El registro no da ningún beneficio. Si dejás tu correo (es opcional), lo usamos solo para avisarte si hay cambios. Los borramos después de la función.</p></details>
+          <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia. Esta página no pide ni guarda datos personales.</p></details>
           <details><summary>¿Puedo sacar fotos?</summary><p>Se agradece no tomar fotos durante la función.</p></details>
         </div>
       </div>
     </section>
 
-    <section class="reserve" id="reservar">
-      <div class="reserve-open">
-        <h2 class="section-title rv" id="reserva-titulo">Confirmá tu asistencia</h2>
-        <p class="lead">Dejanos tu nombre y apellido, y cuántas personas van, para saber cuánta gente asiste.</p>
-        <p class="note">Se agradece no tomar fotos durante la función.</p>
-
-        <noscript><p class="form-msg err">Para confirmar tu asistencia necesitás activar JavaScript en tu navegador.</p></noscript>
-
-        <form id="reserva" class="form rv" novalidate aria-labelledby="reserva-titulo">
-          <div class="hp" aria-hidden="true">
-            <label>No completar este campo <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label>
-          </div>
-
-          <div class="field">
-            <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" spellcheck="false" maxlength="40" required>
-            <p class="field-error" id="nombre-error" hidden></p>
-          </div>
-          <div class="field">
-            <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" name="apellido" placeholder="Tu apellido" autocomplete="family-name" autocapitalize="words" enterkeyhint="next" spellcheck="false" maxlength="40" required>
-            <p class="field-error" id="apellido-error" hidden></p>
-          </div>
-          <div class="field">
-            <label for="personas">¿Cuántas personas van? (contándote a vos)</label>
-            <select id="personas" name="personas" required>
-              <option value="1" selected>1 persona (solo yo)</option>
-              <option value="2">2 personas</option>
-              <option value="3">3 personas</option>
-              <option value="4">4 personas</option>
-              <option value="5">5 personas</option>
-              <option value="6">6 personas</option>
-              <option value="7">7 personas</option>
-              <option value="8">8 personas</option>
-              <option value="9">9 personas</option>
-              <option value="10">10 personas</option>
-            </select>
-            <p class="field-error" id="personas-error" hidden></p>
-          </div>
-          <div class="field">
-            <label for="correo">Correo (opcional)</label>
-            <input id="correo" type="email" inputmode="email" name="email" placeholder="tunombre@gmail.com" autocomplete="email" autocapitalize="off" enterkeyhint="send" spellcheck="false" maxlength="80">
-            <p class="field-error" id="correo-error" hidden></p>
-          </div>
-
-          <p id="msg" class="form-msg" role="status"></p>
-          <a id="planb" class="btn btn--line btn--sm" href="#" target="_blank" rel="noopener noreferrer" hidden>Avisarnos por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
-          <button id="enviar" class="btn btn--gold" type="submit">Confirmar asistencia</button>
-          <p class="priv">Usamos tu nombre solo para llevar la cuenta de asistentes. Si dejás tu correo, es únicamente para avisarte si hay cambios. Los borramos después de la función.</p>
-        </form>
-
-        <div id="ok" class="ok" hidden>
-          <h3 id="okTitulo" class="ok-title" tabindex="-1">¡Listo!</h3>
-          <p>Anotamos <b id="okPersonas"></b>. Te esperamos el viernes 6 de noviembre a las 12:00.</p>
-          <p class="ok-note">Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p>
-          <p class="ok-note" id="okNota" hidden>Cualquier cambio te lo avisamos a <b id="okMail"></b>.</p>
-          <div class="ok-actions">
-            <button class="btn btn--gold btn--sm" type="button" data-calendar>Agregar al calendario</button>
-            <a class="btn btn--line btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=Jos%C3%A9%20Enrique%20Rod%C3%B3%20614%2C%20Canelones%2C%20Uruguay" target="_blank" rel="noopener noreferrer">Cómo llegar<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
-            <a id="wa" class="btn btn--line btn--sm" href="#" target="_blank" rel="noopener noreferrer">Compartir por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
-          </div>
-          <button id="otra" class="ok-again" type="button">Confirmar otra asistencia</button>
-          <button class="ok-again" type="button" data-print>Imprimir o guardar la ficha</button>
-        </div>
-      </div>
-
-      <div class="reserve-closed" hidden>
-        <h2 class="section-title">Confirmaciones cerradas</h2>
-        <p class="lead">La función ya empezó. ¡Gracias por acompañarnos!</p>
-      </div>
-    </section>
-
   </main>
-
-  <dialog id="aviso" class="aviso" aria-labelledby="aviso-titulo" aria-describedby="aviso-texto">
-    <div class="aviso-in">
-      <h3 id="aviso-titulo" class="aviso-title">Antes de confirmar</h3>
-      <p id="aviso-texto">Este registro es solo para saber cuántas personas van a asistir. No da ningún beneficio ni ventaja.</p>
-      <div class="aviso-actions">
-        <button id="aviso-ok" class="btn btn--gold btn--sm" type="button">Aceptar</button>
-        <button id="aviso-no" class="btn btn--line btn--sm" type="button">Volver</button>
-      </div>
-    </div>
-  </dialog>
 
   <div class="ficha">
     <p class="ficha-kicker">Comedia · Entrada gratuita</p>
@@ -984,8 +779,6 @@ footer{
     <p class="ficha-note">Se agradece no tomar fotos durante la función.</p>
   </div>
 
-  <a class="btn btn--gold sticky-cta" id="sticky" href="#reservar" data-reserva>Confirmar mi asistencia</a>
-
   <footer>
     <p class="foot-brand">Esperando la carroza</p>
     <p>Comedia · Viernes 6 de noviembre de 2026, 12:00 · Entrada gratuita</p>
@@ -993,8 +786,8 @@ footer{
       <a href="#inicio">Inicio</a>
       <a href="#funcion">Función</a>
       <a href="#lugar">Dónde es</a>
+      <a href="#antes" data-antes>Antes de ir</a>
       <a href="#preguntas">Preguntas</a>
-      <a href="#reservar" data-reserva>Confirmar asistencia</a>
       <button type="button" data-print>Imprimir ficha</button>
     </nav>
   </footer>
@@ -1006,8 +799,7 @@ footer{
   /* ==========================================================================
      ESPERANDO LA CARROZA · comportamiento
      1 Intro · 2 Arrancar arriba · 3 Progreso y sección activa · 4 Menú móvil
-     5 Revelado · 6 Portada (foco y polvo) · 7 Cuenta regresiva y cierre
-     8 Calendario · 9 Reserva · 10 Botón fijo móvil
+     5 Revelado · 6 Portada (foco y polvo) · 7 Cuenta regresiva · 8 Calendario
      ========================================================================== */
 
   // Datos del evento. Si cambia la fecha: acá, en el JSON-LD del <head> y en los textos del HTML.
@@ -1031,6 +823,10 @@ footer{
     const abrir = () => { l.media = 'all'; };
     if (l.sheet) abrir(); else l.addEventListener('load', abrir, { once: true });
   });
+
+  /* Versiones anteriores de la página guardaban en este navegador un registro de las asistencias enviadas.
+     Ya no se usa: se borra para no dejar nombres ni correos en el dispositivo de nadie. */
+  try { localStorage.removeItem('rv_lista'); localStorage.removeItem('rv_ult'); } catch (e) { /* sin almacenamiento */ }
 
 
   /* 1 · Intro ---------------------------------------------------------------
@@ -1076,7 +872,7 @@ footer{
     addEventListener('scroll', () => { if (!esperando) { esperando = true; requestAnimationFrame(pintar); } }, { passive: true });
     addEventListener('resize', remedir);
     addEventListener('load', remedir);
-    if ('ResizeObserver' in window) new ResizeObserver(remedir).observe(document.body);   // al abrir una pregunta o enviar la reserva
+    if ('ResizeObserver' in window) new ResizeObserver(remedir).observe(document.body);   // al abrir una pregunta
     remedir();
 
     // Resalta en el menú la sección que cruza el 45 % de la pantalla
@@ -1084,7 +880,7 @@ footer{
     const enlaces = $$('.menu a[href^="#"]');
     const porId = {};
     enlaces.forEach(a => { porId[a.getAttribute('href').slice(1)] = a; });
-    const secciones = ['funcion', 'lugar', 'como', 'preguntas', 'reservar'].map(id => document.getElementById(id)).filter(Boolean);
+    const secciones = ['funcion', 'lugar', 'antes', 'preguntas'].map(id => document.getElementById(id)).filter(Boolean);
     const visibles = new Set();
     const io = new IntersectionObserver(entradas => {
       entradas.forEach(e => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
@@ -1184,10 +980,10 @@ footer{
   })();
 
 
-  /* 7 · Cuenta regresiva y cierre de reservas -------------------------------
+  /* 7 · Cuenta regresiva y cierre -------------------------------------------
      Se actualiza justo al cambiar cada segundo (sin saltos ni repeticiones) y
-     solo escribe en el DOM lo que cambió. Al empezar la función se cierran las
-     reservas: ya no tiene sentido ofrecer un formulario para un evento en curso. */
+     solo escribe en el DOM lo que cambió. Al empezar la función se oculta lo
+     que solo sirve antes de ir (lo marcado con data-antes). */
   const cuenta = $('#cuenta');
   (() => {
     const celdas = {};
@@ -1209,9 +1005,7 @@ footer{
       cuenta.removeAttribute('role');
       cuenta.removeAttribute('aria-label');
       cuenta.textContent = 'Gracias por venir';
-      $$('[data-reserva]').forEach(el => { el.hidden = true; });
-      $('.reserve-open').hidden = true;
-      $('.reserve-closed').hidden = false;
+      $$('[data-antes]').forEach(el => { el.hidden = true; });
       const sinCalendario = () => $$('[data-calendar]').forEach(el => { el.hidden = true; });
       const resta = EVENTO.fin - Date.now();
       if (resta <= 0) sinCalendario(); else setTimeout(sinCalendario, resta);   // también si la página queda abierta hasta el final
@@ -1274,281 +1068,6 @@ footer{
     }
     $$('[data-calendar]').forEach(b => b.addEventListener('click', descargar));
     $$('[data-print]').forEach(b => b.addEventListener('click', () => window.print()));
-  })();
-
-
-  /* 9 · Reserva --------------------------------------------------------------- */
-  (() => {
-    const form = $('#reserva'), msg = $('#msg'), btn = $('#enviar'), ok = $('#ok'), aviso = $('#aviso'), planB = $('#planb');
-    if (!form) return;
-    const ENDPOINT = 'https://formsubmit.co/ajax/43a6317c64153ef108fb3d56a243e180';
-    // Plan B si el envío falla: WhatsApp de la organización, con código de país y sin signos (ej.: '59899123456').
-    // Vacío = no se muestra el botón.
-    const WHATSAPP_CONTACTO = '';
-    const CAMPOS = ['nombre', 'apellido', 'personas', 'correo'];   // el correo es opcional: solo se valida si lo escriben
-    const MAX_PERSONAS = 10;
-    const MAX_REGISTROS = 10;          // registros por dispositivo
-    const AVISO = 'Este registro es solo para saber cuántas personas van a asistir. No da ningún beneficio ni ventaja.';
-    const el = id => document.getElementById(id);
-    const abierto = Date.now();
-    let enviando = false;
-
-    /* Moderación de nombres: se bloquean los insultos claros; las palabras dudosas se aceptan pero se marcan para revisar */
-    const BLOQUEAR = ['puta', 'puto', 'putas', 'putos', 'putita', 'putito', 'pija', 'pijas', 'pijudo', 'verga', 'vergas', 'chota', 'choto', 'culiao', 'culiado', 'gilipollas', 'gilipolla', 'boludo', 'boluda', 'pelotudo', 'pelotuda', 'hijoputa', 'hijueputa', 'maricon'];
-    const FRAGMENTOS = ['pelotud', 'boludo', 'hijoputa', 'hijodeputa', 'hijueputa', 'conchadetu', 'conchatu', 'conchetu', 'chupapij', 'malparid', 'gilipoll', 'cojud', 'culiad', 'culiao', 'mamaguev'];
-    const DUDOSAS = ['culo', 'culos', 'mierda', 'mierdas', 'carajo', 'joder', 'jodido', 'jodida', 'zorra', 'marica', 'corrupto'];
-    const NOMBRE_RE = /^\p{L}[\p{L}\s'’.-]{1,39}$/u;
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const LEET = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '@': 'a', '$': 's', '!': 'i', '|': 'i', '+': 't' };
-    const reduc = w => w.replace(/(.)\1+/g, '$1');            // "puuuta" → "puta"
-    const FUERTES = new Set(BLOQUEAR.map(reduc));              // se calculan una vez, no en cada envío
-    const SOSPECHOSAS = new Set(DUDOSAS.map(reduc));
-    const FRAGS = FRAGMENTOS.map(reduc);
-
-    const limpiar = t => t.toLowerCase()
-      .replace(/ñ/g, '\u0001').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0001/g, 'ñ')
-      .replace(/[013457@$!|+]/g, c => LEET[c])
-      .replace(/[^a-zñ\s]/g, ' ');
-
-    // 2 = bloquear, 1 = dudosa (se acepta y se marca), 0 = limpia
-    function nivelSoez(texto) {
-      const t = limpiar(texto).replace(/\s+/g, ' ').trim();
-      // "concha tu…" solo si "tu" es una palabra (no bloquea apellidos como Tudela o Turner)
-      if (/concha\s*(de\s*)?tu(\s|$|ma|ya)/.test(t)) return 2;
-      const unidas = []; let buf = '';
-      t.split(' ').forEach(w => {                              // junta letras sueltas: "p u t a"
-        if (w.length === 1) buf += w;
-        else { if (buf) { unidas.push(buf); buf = ''; } if (w) unidas.push(w); }
-      });
-      if (buf) unidas.push(buf);
-      let dudosa = false;
-      for (const w of unidas) {
-        const r = reduc(w);
-        if (FUERTES.has(r) || FRAGS.some(f => r.includes(f))) return 2;
-        if (SOSPECHOSAS.has(r)) dudosa = true;
-      }
-      return dudosa ? 1 : 0;
-    }
-
-    const arreglar = v => {                                    // "juan PEREZ" → "Juan Perez"
-      v = v.replace(/\s+/g, ' ').trim();
-      if (v === v.toLowerCase() || v === v.toUpperCase()) {
-        v = v.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
-      }
-      return v;
-    };
-
-    /* Registros de este dispositivo: evita anotar dos veces a la misma persona y limita los envíos repetidos */
-    const LISTA = 'rv_lista';
-    const leerLista = () => {
-      try { const l = JSON.parse(localStorage.getItem(LISTA) || '[]'); return Array.isArray(l) ? l : []; }
-      catch (e) { return []; }
-    };
-    const claveNombre = (n, a) => 'n:' + limpiar(n + ' ' + a).replace(/\s+/g, '');
-    const claveCorreo = c => 'e:' + c.toLowerCase();
-    const guardarRegistro = (n, a, c) => {
-      try {
-        const l = leerLista(); l.push(claveNombre(n, a)); if (c) l.push(claveCorreo(c));
-        localStorage.setItem(LISTA, JSON.stringify(l));
-      } catch (e) { /* sin almacenamiento */ }
-    };
-
-    /* Estado de la interfaz */
-    const decir = (texto, error) => { msg.textContent = texto; msg.classList.toggle('err', !!error); };
-    const marcar = (id, texto) => {
-      const input = el(id), err = el(id + '-error');
-      input.setAttribute('aria-invalid', 'true');
-      input.setAttribute('aria-describedby', err.id);
-      err.textContent = texto; err.hidden = false;
-    };
-    const desmarcar = id => {
-      const input = el(id), err = el(id + '-error');
-      input.removeAttribute('aria-invalid'); input.removeAttribute('aria-describedby');
-      err.hidden = true; err.textContent = '';
-    };
-    const ocupado = si => {
-      enviando = si;
-      btn.setAttribute('aria-disabled', String(si));
-      btn.classList.toggle('is-loading', si);
-      btn.textContent = si ? 'Enviando…' : 'Confirmar asistencia';
-      form.setAttribute('aria-busy', String(si));
-    };
-    CAMPOS.forEach(id => el(id).addEventListener('input', () => desmarcar(id)));
-    el('personas').addEventListener('change', () => desmarcar('personas'));
-
-    function confeti(caja) {
-      if (reduceMotion) return;
-      const colores = ['#d9ab55', '#f0d18f', '#f3ead9', '#a3263f'];
-      const frag = document.createDocumentFragment();
-      for (let i = 0; i < 42; i++) {
-        const c = document.createElement('i');
-        c.className = 'cf';
-        c.style.cssText = `left:${Math.random() * 100}%;background:${colores[i % 4]};animation-delay:${Math.random() * .6}s;animation-duration:${1.8 + Math.random() * 1.4}s`;
-        c.addEventListener('animationend', () => c.remove(), { once: true });
-        frag.appendChild(c);
-      }
-      caja.appendChild(frag);
-    }
-
-    function exito(nombre, apellido, personas, correo) {
-      try { localStorage.setItem('rv_ult', String(Date.now())); } catch (e) { /* sin almacenamiento */ }
-      guardarRegistro(nombre, apellido, correo);
-      el('okTitulo').textContent = `¡Listo, ${nombre}!`;
-      el('okPersonas').textContent = personas === 1 ? 'a 1 persona' : `a ${personas} personas`;
-      el('okMail').textContent = correo;
-      el('okNota').hidden = !correo;
-      el('wa').href = 'https://wa.me/?text=' + encodeURIComponent(
-        `${EVENTO.nombre}, comedia. Viernes 6 de noviembre, 12:00. Entrada gratuita. Confirmá tu asistencia: ${location.href.split('#')[0]}`
-      );
-      planB.hidden = true;
-      form.hidden = true;
-      ok.hidden = false;
-      confeti(ok);
-      el('okTitulo').focus();           // el foco no se pierde cuando desaparece el botón de envío
-    }
-
-    // Plan B: si el envío falla y hay un WhatsApp configurado, ofrece mandar los mismos datos por ahí
-    function mostrarPlanB(nombre, apellido, personas, correo) {
-      const num = String(WHATSAPP_CONTACTO).replace(/\D/g, '');
-      if (!num) return;
-      const texto = `Hola, quiero confirmar mi asistencia a ${EVENTO.nombre}. Nombre: ${nombre} ${apellido}. Personas: ${personas}.` + (correo ? ` Correo: ${correo}.` : '');
-      planB.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(texto);
-      planB.hidden = false;
-    }
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      if (form.elements._honey.value || enviando) return;     // señuelo anti-spam / doble clic
-
-      CAMPOS.forEach(desmarcar);
-      decir('');
-      planB.hidden = true;
-      let nombre = el('nombre').value.trim(), apellido = el('apellido').value.trim();
-      const personasTxt = el('personas').value.trim(), personas = Number(personasTxt);
-      const correo = el('correo').value.trim();
-
-      // 1) Errores por campo, con el mensaje debajo de cada uno
-      const errores = {};
-      let revisar = false;
-      [['nombre', nombre], ['apellido', apellido]].forEach(([id, v]) => {
-        if (!v) errores[id] = `Escribí tu ${id}.`;
-        else if (!NOMBRE_RE.test(v)) errores[id] = 'Usá solo letras (mínimo 2).';
-        else {
-          const n = nivelSoez(v);
-          if (n === 2) errores[id] = 'Hay palabras que no están permitidas. Escribí tus datos reales, por favor.';
-          else if (n === 1) revisar = true;
-        }
-      });
-      if (!personasTxt) errores.personas = 'Elegí cuántas personas van, contándote a vos.';
-      else if (!Number.isInteger(personas) || personas < 1 || personas > MAX_PERSONAS) errores.personas = `Elegí un número de 1 a ${MAX_PERSONAS}. Si son más, hacé otro registro a nombre de otra persona.`;
-      if (correo && !EMAIL_RE.test(correo)) errores.correo = 'Revisá tu correo: tiene que ser una dirección válida, por ejemplo nombre@gmail.com. Si preferís, dejalo vacío.';
-      const primero = CAMPOS.find(id => errores[id]);
-      if (primero) {
-        CAMPOS.forEach(id => { if (errores[id]) marcar(id, errores[id]); });
-        el(primero).focus();
-        return;
-      }
-
-      // 2) Repetidos y límite por dispositivo
-      const lista = leerLista();
-      if (lista.filter(k => k.startsWith('n:')).length >= MAX_REGISTROS) {
-        decir('Ya hiciste varios registros desde este dispositivo. Si vienen más personas, sumalas en «¿Cuántas personas van?».', true);
-        return;
-      }
-      if (lista.includes(claveNombre(nombre, apellido))) {
-        marcar('apellido', `Ya anotamos a ${arreglar(nombre)} ${arreglar(apellido)} desde este dispositivo. Si es otra persona con el mismo nombre, agregá una inicial al apellido.`);
-        el('apellido').focus();
-        return;
-      }
-      if (correo && lista.includes(claveCorreo(correo))) {
-        marcar('correo', 'Ese correo ya se usó en otro registro desde este dispositivo. Si es otra persona, dejalo vacío.');
-        el('correo').focus();
-        return;
-      }
-
-      // 3) Anti-spam (recién después de validar, para que los errores del formulario siempre se vean primero)
-      if (Date.now() - abierto < 3000) { decir('Esperá un segundo y volvé a tocar «Confirmar asistencia».', true); return; }
-      try {
-        if (Date.now() - (+localStorage.getItem('rv_ult') || 0) < 60000) {
-          decir('Ya confirmaste tu asistencia hace un momento. Esperá un minuto para confirmar otra.', true);
-          return;
-        }
-      } catch (err) { /* sin almacenamiento */ }
-
-      // 4) Cartelito de aviso: recién al aceptar se envía
-      nombre = arreglar(nombre); apellido = arreglar(apellido);
-      pedirAviso(() => enviar(nombre, apellido, personas, correo, revisar));
-    });
-
-    function pedirAviso(alAceptar) {
-      if (!aviso || typeof aviso.showModal !== 'function') {   // navegador sin <dialog>
-        if (window.confirm(AVISO)) alAceptar();
-        return;
-      }
-      aviso.returnValue = '';
-      aviso.addEventListener('close', () => {
-        if (aviso.returnValue === 'ok') alAceptar();
-        else btn.focus();                                      // Volver, Esc o clic afuera
-      }, { once: true });
-      aviso.showModal();
-    }
-    if (aviso) {
-      el('aviso-ok').addEventListener('click', () => aviso.close('ok'));
-      el('aviso-no').addEventListener('click', () => aviso.close('no'));
-      aviso.addEventListener('click', e => { if (e.target === aviso) aviso.close('no'); });   // clic en el fondo
-    }
-
-    // 5) Envío, con tiempo máximo para no quedar eternamente en "Enviando…"
-    function enviar(nombre, apellido, personas, correo, revisar) {
-      ocupado(true);
-      const datos = { nombre, apellido, personas };
-      if (correo) datos.email = correo;                         // el correo viaja solo si lo escribieron
-      if (revisar) datos.revisar = 'Nombre con una palabra dudosa: conviene revisarlo';
-      Object.assign(datos, { _subject: 'Asistencia: Esperando la carroza', _template: 'table', _captcha: 'false' });
-      const ctrl = new AbortController();
-      const corte = setTimeout(() => ctrl.abort(), 15000);
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(datos),
-        signal: ctrl.signal
-      })
-        .then(r => r.json().catch(() => ({})).then(d => ({ bien: r.ok, d })))
-        .then(({ bien, d }) => {
-          if (!(bien && (d.success === true || d.success === 'true'))) throw new Error('fail');
-          exito(nombre, apellido, personas, correo);
-        })
-        .catch(err => {
-          if (!navigator.onLine) decir('No tenés conexión a internet. Cuando vuelva, tocá de nuevo «Confirmar asistencia»; tus datos siguen en el formulario.', true);
-          else if (err && err.name === 'AbortError') decir('Tardó demasiado en responder. Probá de nuevo en unos segundos; tus datos siguen en el formulario.', true);
-          else decir('No pudimos confirmar tu asistencia. Probá de nuevo en unos segundos; tus datos siguen en el formulario.', true);
-          mostrarPlanB(nombre, apellido, personas, correo);
-        })
-        .finally(() => { clearTimeout(corte); ocupado(false); });
-    }
-
-    el('otra').addEventListener('click', () => {      // varias personas pueden reservar desde un mismo dispositivo
-      ok.hidden = true; form.hidden = false; form.reset(); decir(''); planB.hidden = true;
-      el('nombre').focus();
-    });
-  })();
-
-
-  /* 10 · Botón fijo en móvil -------------------------------------------------
-     Aparece al salir de la portada y se esconde sobre el formulario y el pie. */
-  (() => {
-    const cta = $('#sticky');
-    if (!cta || !hasIO) return;
-    const en = { portada: true, reserva: false, pie: false };
-    const mirar = (selector, clave) => {
-      new IntersectionObserver(([e]) => {
-        en[clave] = e.isIntersecting;
-        cta.classList.toggle('on', !en.portada && !en.reserva && !en.pie);
-      }).observe($(selector));
-    };
-    mirar('#inicio', 'portada');
-    mirar('#reservar', 'reserva');
-    mirar('footer', 'pie');
   })();
 
 })();
