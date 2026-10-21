@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <!-- Esta página no tiene formularios ni envía datos a ningún servidor: connect-src 'none' y form-action 'none' lo impiden.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-neq6xz64AlJu/nUAb9xtXdxgJi+qcEUXl5+DyajTw2E='; style-src 'self' 'sha256-kRlicBzjHYM9JhlNly2nEwYGH2kBB8cT03Yzw+5O8EM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-WsBsIZWvijixDGAnAmUP5ezE8u940AALEBySWHn86Ao='; style-src 'self' 'sha256-ewowTn+E24VWro3SO4gHQx4PZPSGFKqTdtEuXSsJIrA=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
-  <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 12:00, en la Escuela Técnica Canelones. Entrada gratuita.">
+  <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, entre las 18:00 y las 22:00, en la Escuela Técnica Canelones. Entrada gratuita.">
   <meta name="theme-color" content="#2a060d">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_UY">
   <meta property="og:site_name" content="Esperando la carroza">
   <meta property="og:title" content="Esperando la carroza — Comedia en el teatro">
-  <meta property="og:description" content="Viernes 6 de noviembre de 2026, 12:00, Escuela Técnica Canelones. Entrada gratuita.">
+  <meta property="og:description" content="Viernes 6 de noviembre de 2026, entre las 18:00 y las 22:00, Escuela Técnica Canelones. Entrada gratuita.">
   <meta name="twitter:card" content="summary">
   <!-- Para que WhatsApp, Instagram y otras apps muestren una imagen al compartir el enlace:
        subí una portada de 1200×630 px y activá estas líneas con la URL completa de tu sitio.
@@ -181,7 +181,7 @@ p,dd,summary{text-wrap:pretty}
 }
 
 .sin-intro .curtain{display:none}
-.sin-intro :is(.kicker,.hero-title,.sub,.count,.actions){opacity:1;animation:none}
+.sin-intro :is(.kicker,.hero-title,.author,.sub,.count,.actions){opacity:1;animation:none}
 
 /* Revelado al hacer scroll (solo si hay JS: sin JS todo se ve) */
 .js .rv{
@@ -219,14 +219,16 @@ p,dd,summary{text-wrap:pretty}
   content:"";position:absolute;left:2px;right:2px;bottom:6px;height:1px;
   background:var(--gold-2);transform:scaleX(0);transition:transform .3s;
 }
+.menu a[aria-disabled="true"]{opacity:.45;cursor:default}
+.menu a[aria-disabled="true"]::after{display:none}
 .menu a.act{color:var(--gold-2)}
 .menu a.act::after{transform:scaleX(1)}
 
 .menu-btn{display:none}   /* solo en móvil, ver sección 13 */
 
 @media (hover:hover){
-  .menu a:hover{color:var(--gold-2)}
-  .menu a:hover::after{transform:scaleX(1)}
+  .menu a[href]:hover{color:var(--gold-2)}
+  .menu a[href]:hover::after{transform:scaleX(1)}
 }
 
 
@@ -275,6 +277,12 @@ p,dd,summary{text-wrap:pretty}
   }
 }
 .hero-title span{display:block;padding-right:.04em;font-style:italic;font-weight:300}
+
+.author{
+  margin:16px auto 0;
+  font:400 .9375rem/1.4 var(--sans);letter-spacing:.14em;color:var(--ivory-3);
+  opacity:0;animation:rise 1.4s 2.5s forwards;
+}
 
 .sub{
   margin:28px auto 0;
@@ -559,7 +567,7 @@ footer{
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .curtain{display:none}
-  .kicker,.hero-title,.sub,.count,.actions{opacity:1;animation:none}
+  .kicker,.hero-title,.author,.sub,.count,.actions{opacity:1;animation:none}
   .track{animation:none}
   .js .rv{opacity:1;transform:none;transition:none}
   .btn--gold::after{display:none}
@@ -580,7 +588,7 @@ footer{
   .ficha-line b{display:block;font-size:11pt;letter-spacing:.1em;text-transform:uppercase}
   .ficha-note{margin:22px 0 0;font-size:11pt}
   .curtain,.progress,.topbar,.marquee,.skip-link,.hero>canvas{display:none!important}
-  .js .rv,.kicker,.hero-title,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
+  .js .rv,.kicker,.hero-title,.author,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
 }
   </style>
 
@@ -602,8 +610,8 @@ footer{
     "@type": "TheaterEvent",
     "name": "Esperando la carroza",
     "description": "Comedia. Entrada gratuita.",
-    "startDate": "2026-11-06T12:00:00-03:00",
-    "endDate": "2026-11-06T13:00:00-03:00",
+    "startDate": "2026-11-06T18:00:00-03:00",
+    "endDate": "2026-11-06T22:00:00-03:00",
     "eventStatus": "https://schema.org/EventScheduled",
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "location": {
@@ -635,7 +643,7 @@ footer{
       y en la constante EVENTO del <script> (calendario y cuenta regresiva).
     · Colores, radios y espaciados: variables al comienzo del CSS (:root).
     · Seguridad: la política CSP del <head> usa «hashes» del <style> y de los <script>. Si editás a mano alguno de
-      esos bloques, corré «python3 actualizar-csp.py» (o pedile a Claude que lo recalcule); si no, el navegador
+      esos bloques, pedile a Claude que recalcule los hashes; si no, el navegador
       bloquea el bloque editado y la web deja de funcionar.
     · Lo que solo sirve antes de la función lleva data-antes: se oculta solo cuando empieza.
     · Esta página no tiene formularios ni guarda datos de nadie. Si algún día se agrega uno, hay que
@@ -652,6 +660,8 @@ footer{
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú"><span></span><span></span></button>
       <ul class="menu" id="menu">
         <li><a href="#funcion">Función</a></li>
+        <!-- Elenco: pestaña puesta pero todavía sin función. Cuando esté lista: agregar la sección id="elenco" y un href="#elenco" acá; quitar aria-disabled. -->
+        <li><a role="link" aria-disabled="true">Elenco</a></li>
         <li><a href="#lugar">Dónde es</a></li>
         <li data-antes><a href="#antes">Antes de ir</a></li>
         <li><a href="#preguntas">Preguntas</a></li>
@@ -666,8 +676,9 @@ footer{
       <div class="hero-inner">
         <p class="kicker">Una comedia en vivo</p>
         <h1 class="hero-title">Esperando <span>la carroza</span></h1>
-        <p class="sub"><span>Viernes 6 de noviembre, 12:00.</span> <span>Escuela Técnica Canelones.</span> <span>Entrada gratuita.</span></p>
-        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva para la función">
+        <p class="author">de Jacobo Langsner</p>
+        <p class="sub"><span>Viernes 6 de noviembre, entre 18:00 y 22:00.</span> <span>Escuela Técnica Canelones.</span> <span>Entrada gratuita.</span></p>
+        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva hasta las 18:00; la función puede empezar entre las 18:00 y las 22:00">
           <div class="cell" data-u="d"><b>--</b><span>días</span></div>
           <div class="cell" data-u="h"><b>--</b><span>horas</span></div>
           <div class="cell" data-u="m"><b>--</b><span>min</span></div>
@@ -683,16 +694,16 @@ footer{
     <div class="marquee" aria-hidden="true">
       <div class="track">
         <div class="group">
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
         </div>
         <div class="group">
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  12:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  18:00 a 22:00  ✦  Escuela Técnica Canelones  ✦  </span>
         </div>
       </div>
     </div>
@@ -707,7 +718,7 @@ footer{
             <dl class="ticket-data">
               <div><dt>Día</dt><dd>Viernes</dd></div>
               <div><dt>Fecha</dt><dd><time datetime="2026-11-06">6 de noviembre de 2026</time></dd></div>
-              <div><dt>Hora</dt><dd><time datetime="12:00">12:00</time></dd></div>
+              <div><dt>Hora</dt><dd>Entre 18:00 y 22:00</dd></div>
               <div><dt>Lugar</dt><dd>Escuela Técnica Canelones</dd></div>
             </dl>
           </div>
@@ -748,8 +759,8 @@ footer{
             <dd>Se agradece no tomar fotos durante la función, por respeto a quienes actúan y al resto del público.</dd>
           </div>
           <div>
-            <dt>Tus datos</dt>
-            <dd>Esta página no pide ni guarda datos personales: no hay registro, cuentas ni formularios.</dd>
+            <dt>Horario</dt>
+            <dd>No hay una hora exacta de inicio: posiblemente sea entre las 18:00 y las 22:00.</dd>
           </div>
         </dl>
       </div>
@@ -760,9 +771,10 @@ footer{
         <h2 class="section-title rv">Preguntas frecuentes</h2>
         <div class="rv">
           <details><summary>¿Cuánto cuesta la entrada?</summary><p>Nada. La entrada es gratuita.</p></details>
-          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026 a las 12:00, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026, posiblemente entre las 18:00 y las 22:00, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿A qué hora empieza?</summary><p>No hay una hora exacta de inicio. Posiblemente sea entre las 18:00 y las 22:00.</p></details>
           <details><summary>¿Cómo llego?</summary><p>En la sección <a href="#lugar">¿Dónde es?</a> tocá «Cómo llegar» y se abre en tu aplicación de mapas.</p></details>
-          <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia. Esta página no pide ni guarda datos personales.</p></details>
+          <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia.</p></details>
           <details><summary>¿Puedo sacar fotos?</summary><p>Se agradece no tomar fotos durante la función.</p></details>
         </div>
       </div>
@@ -774,14 +786,14 @@ footer{
     <p class="ficha-kicker">Comedia · Entrada gratuita</p>
     <p class="ficha-title">Esperando la carroza</p>
     <p class="ficha-line"><b>Fecha</b>Viernes 6 de noviembre de 2026</p>
-    <p class="ficha-line"><b>Hora</b>12:00</p>
+    <p class="ficha-line"><b>Hora</b>Entre 18:00 y 22:00<br>(sin hora exacta de inicio)</p>
     <p class="ficha-line"><b>Lugar</b>Escuela Técnica Canelones<br>José Enrique Rodó 614, Canelones, Uruguay</p>
     <p class="ficha-note">Se agradece no tomar fotos durante la función.</p>
   </div>
 
   <footer>
     <p class="foot-brand">Esperando la carroza</p>
-    <p>Comedia · Viernes 6 de noviembre de 2026, 12:00 · Entrada gratuita</p>
+    <p>Comedia · Viernes 6 de noviembre de 2026, entre 18:00 y 22:00 · Entrada gratuita</p>
     <nav class="fnav" aria-label="Secundaria">
       <a href="#inicio">Inicio</a>
       <a href="#funcion">Función</a>
@@ -805,10 +817,10 @@ footer{
   // Datos del evento. Si cambia la fecha: acá, en el JSON-LD del <head> y en los textos del HTML.
   const EVENTO = {
     nombre: 'Esperando la carroza',
-    inicio: new Date('2026-11-06T12:00:00-03:00'),
-    duracionMin: 60,
+    inicio: new Date('2026-11-06T18:00:00-03:00'),   // inicio del rango posible (no hay hora exacta)
+    duracionMin: 240,                                // hasta las 22:00
     lugar: 'Escuela Técnica Canelones, José Enrique Rodó 614, Canelones, Uruguay',
-    descripcion: 'Comedia. Entrada gratuita. Se agradece no tomar fotos durante la función.'
+    descripcion: 'Comedia. Entrada gratuita. Sin hora exacta de inicio: posiblemente entre las 18:00 y las 22:00. Se agradece no tomar fotos durante la función.'
   };
   EVENTO.fin = new Date(EVENTO.inicio.getTime() + EVENTO.duracionMin * 60000);
 
@@ -999,16 +1011,23 @@ footer{
       return true;
     };
 
+    // Desde las 18:00 la función puede empezar en cualquier momento: se avisa que es hoy.
+    // Recién al terminar el rango (22:00) se agradece y se oculta lo que solo sirve antes de ir.
+    function terminada() {
+      cuenta.className = 'count thanks';
+      cuenta.textContent = 'Gracias por venir';
+      $$('[data-antes]').forEach(el => { el.hidden = true; });
+      $$('[data-calendar]').forEach(el => { el.hidden = true; });
+    }
+
     function iniciada() {
       clearTimeout(timer);
       cuenta.className = 'count thanks';
       cuenta.removeAttribute('role');
       cuenta.removeAttribute('aria-label');
-      cuenta.textContent = 'Gracias por venir';
-      $$('[data-antes]').forEach(el => { el.hidden = true; });
-      const sinCalendario = () => $$('[data-calendar]').forEach(el => { el.hidden = true; });
+      cuenta.textContent = 'Hoy es la función';
       const resta = EVENTO.fin - Date.now();
-      if (resta <= 0) sinCalendario(); else setTimeout(sinCalendario, resta);   // también si la página queda abierta hasta el final
+      if (resta <= 0) terminada(); else timer = setTimeout(terminada, resta);
     }
 
     function tick() {
@@ -1057,8 +1076,8 @@ footer{
         'LOCATION:' + escICS(EVENTO.lugar),
         'DESCRIPTION:' + escICS(EVENTO.descripcion),
         'STATUS:CONFIRMED',
-        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Mañana a las 12:00: ' + EVENTO.nombre), 'END:VALARM',
-        'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Hoy a las 12:00: ' + EVENTO.nombre), 'END:VALARM',
+        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Mañana, entre las 18:00 y las 22:00: ' + EVENTO.nombre), 'END:VALARM',
+        'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Hoy desde las 18:00 (sin hora exacta de inicio): ' + EVENTO.nombre), 'END:VALARM',
         'END:VEVENT', 'END:VCALENDAR'
       ].map(plegar).join('\r\n') + '\r\n';
       const url = URL.createObjectURL(new Blob([lineas], { type: 'text/calendar;charset=utf-8' }));
