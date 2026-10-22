@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!-- Esta página no tiene formularios ni envía datos a ningún servidor: connect-src 'self' y form-action 'none' lo impiden.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-cDP42vfKG3VVkmL5rXziO+CDrhOJ51r3rt3kttPNhps='; style-src 'self' 'sha256-kRlicBzjHYM9JhlNly2nEwYGH2kBB8cT03Yzw+5O8EM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-nqV+z+Q6xyRibA9CQez2GIdcpZ7UMZZUm/RCp+p8yeU='; style-src 'self' 'sha256-kRlicBzjHYM9JhlNly2nEwYGH2kBB8cT03Yzw+5O8EM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
   <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 19:30, en la Escuela Técnica Canelones. Entrada gratuita.">
@@ -707,7 +707,7 @@ footer{
             <dl class="ticket-data">
               <div><dt>Día</dt><dd>Viernes</dd></div>
               <div><dt>Fecha</dt><dd><time datetime="2026-11-06">6 de noviembre de 2026</time></dd></div>
-              <div><dt>Hora</dt><dd><time datetime="19:30">19:30</time> a <time datetime="20:00">20:00</time></dd></div>
+              <div><dt>Hora</dt><dd><time datetime="19:30">19:30</time></dd></div>
               <div><dt>Lugar</dt><dd>Escuela Técnica Canelones</dd></div>
             </dl>
           </div>
@@ -760,7 +760,7 @@ footer{
         <h2 class="section-title rv">Preguntas frecuentes</h2>
         <div class="rv">
           <details><summary>¿Cuánto cuesta la entrada?</summary><p>Nada. La entrada es gratuita.</p></details>
-          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026 a las 19:30 (termina a las 20:00), en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026 a las 19:30, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
           <details><summary>¿Cómo llego?</summary><p>En la sección <a href="#lugar">¿Dónde es?</a> tocá «Cómo llegar» y se abre en tu aplicación de mapas.</p></details>
           <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia. Esta página no pide ni guarda datos personales.</p></details>
           <details><summary>¿Puedo sacar fotos?</summary><p>Se agradece no tomar fotos durante la función.</p></details>
@@ -774,7 +774,7 @@ footer{
     <p class="ficha-kicker">Comedia · Entrada gratuita</p>
     <p class="ficha-title">Esperando la carroza</p>
     <p class="ficha-line"><b>Fecha</b>Viernes 6 de noviembre de 2026</p>
-    <p class="ficha-line"><b>Hora</b>19:30 a 20:00</p>
+    <p class="ficha-line"><b>Hora</b>19:30</p>
     <p class="ficha-line"><b>Lugar</b>Escuela Técnica Canelones<br>José Enrique Rodó 614, Canelones, Uruguay</p>
     <p class="ficha-note">Se agradece no tomar fotos durante la función.</p>
   </div>
@@ -1025,16 +1025,23 @@ footer{
       return true;
     };
 
+    // Desde la hora de inicio: se ocultan las secciones "antes de ir". Al llegar la hora de fin (solo se usa acá
+    // y en el calendario) el contador pasa a "Gracias por asistir" y se oculta el botón de calendario.
+    function final() {
+      cuenta.textContent = 'Gracias por asistir';
+      $$('[data-calendar]').forEach(el => { el.hidden = true; });
+    }
+
     function iniciada() {
       clearTimeout(timer);
       cuenta.className = 'count thanks';
       cuenta.removeAttribute('role');
       cuenta.removeAttribute('aria-label');
-      cuenta.textContent = 'Gracias por venir';
       $$('[data-antes]').forEach(el => { el.hidden = true; });
-      const sinCalendario = () => $$('[data-calendar]').forEach(el => { el.hidden = true; });
       const resta = EVENTO.fin - ahora();
-      if (resta <= 0) sinCalendario(); else setTimeout(sinCalendario, resta);   // también si la página queda abierta hasta el final
+      if (resta <= 0) { final(); return; }
+      cuenta.textContent = 'La función está en curso';
+      timer = setTimeout(final, resta);
     }
 
     function tick() {
