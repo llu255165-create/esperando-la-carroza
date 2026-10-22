@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <!-- Esta página no tiene formularios ni envía datos a ningún servidor: connect-src 'self' y form-action 'none' lo impiden.
+  <!-- Esta página no tiene formularios ni envía datos: form-action 'none' lo impide, y connect-src 'self' solo permite pedirle la hora a su propio servidor.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-nqV+z+Q6xyRibA9CQez2GIdcpZ7UMZZUm/RCp+p8yeU='; style-src 'self' 'sha256-kRlicBzjHYM9JhlNly2nEwYGH2kBB8cT03Yzw+5O8EM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-TqEgaDJHf0nSXdbc4Z9PUCnxSnh/+U03n9y9wfZq4gQ='; style-src 'self' 'sha256-ewowTn+E24VWro3SO4gHQx4PZPSGFKqTdtEuXSsJIrA=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
   <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 19:30, en la Escuela Técnica Canelones. Entrada gratuita.">
@@ -181,7 +181,7 @@ p,dd,summary{text-wrap:pretty}
 }
 
 .sin-intro .curtain{display:none}
-.sin-intro :is(.kicker,.hero-title,.sub,.count,.actions){opacity:1;animation:none}
+.sin-intro :is(.kicker,.hero-title,.author,.sub,.count,.actions){opacity:1;animation:none}
 
 /* Revelado al hacer scroll (solo si hay JS: sin JS todo se ve) */
 .js .rv{
@@ -219,14 +219,16 @@ p,dd,summary{text-wrap:pretty}
   content:"";position:absolute;left:2px;right:2px;bottom:6px;height:1px;
   background:var(--gold-2);transform:scaleX(0);transition:transform .3s;
 }
+.menu a[aria-disabled="true"]{opacity:.45;cursor:default}
+.menu a[aria-disabled="true"]::after{display:none}
 .menu a.act{color:var(--gold-2)}
 .menu a.act::after{transform:scaleX(1)}
 
 .menu-btn{display:none}   /* solo en móvil, ver sección 13 */
 
 @media (hover:hover){
-  .menu a:hover{color:var(--gold-2)}
-  .menu a:hover::after{transform:scaleX(1)}
+  .menu a[href]:hover{color:var(--gold-2)}
+  .menu a[href]:hover::after{transform:scaleX(1)}
 }
 
 
@@ -275,6 +277,12 @@ p,dd,summary{text-wrap:pretty}
   }
 }
 .hero-title span{display:block;padding-right:.04em;font-style:italic;font-weight:300}
+
+.author{
+  margin:16px auto 0;
+  font:400 .9375rem/1.4 var(--sans);letter-spacing:.14em;color:var(--ivory-3);
+  opacity:0;animation:rise 1.4s 2.5s forwards;
+}
 
 .sub{
   margin:28px auto 0;
@@ -559,7 +567,7 @@ footer{
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .curtain{display:none}
-  .kicker,.hero-title,.sub,.count,.actions{opacity:1;animation:none}
+  .kicker,.hero-title,.author,.sub,.count,.actions{opacity:1;animation:none}
   .track{animation:none}
   .js .rv{opacity:1;transform:none;transition:none}
   .btn--gold::after{display:none}
@@ -580,7 +588,7 @@ footer{
   .ficha-line b{display:block;font-size:11pt;letter-spacing:.1em;text-transform:uppercase}
   .ficha-note{margin:22px 0 0;font-size:11pt}
   .curtain,.progress,.topbar,.marquee,.skip-link,.hero>canvas{display:none!important}
-  .js .rv,.kicker,.hero-title,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
+  .js .rv,.kicker,.hero-title,.author,.sub,.count,.actions{opacity:1!important;transform:none!important;animation:none!important}
 }
   </style>
 
@@ -635,11 +643,11 @@ footer{
       y en la constante EVENTO del <script> (calendario y cuenta regresiva).
     · Colores, radios y espaciados: variables al comienzo del CSS (:root).
     · Seguridad: la política CSP del <head> usa «hashes» del <style> y de los <script>. Si editás a mano alguno de
-      esos bloques, corré «python3 actualizar-csp.py» (o pedile a Claude que lo recalcule); si no, el navegador
+      esos bloques, pedile a Claude que recalcule los hashes; si no, el navegador
       bloquea el bloque editado y la web deja de funcionar.
     · Lo que solo sirve antes de la función lleva data-antes: se oculta solo cuando empieza.
-    · Esta página no tiene formularios ni guarda datos de nadie. connect-src 'self' solo sirve para
-      pedirle la hora al servidor (contador sincronizado); si algún día se agrega un formulario, abrir también form-action.
+    · Esta página no tiene formularios ni guarda datos de nadie. connect-src 'self' solo sirve para pedirle la hora
+      al servidor (contador sincronizado); si algún día se agrega un formulario, abrir también form-action.
   -->
 
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -652,6 +660,8 @@ footer{
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú"><span></span><span></span></button>
       <ul class="menu" id="menu">
         <li><a href="#funcion">Función</a></li>
+        <!-- Elenco: pestaña puesta pero todavía sin función. Cuando esté lista: agregar la sección id="elenco" y un href="#elenco" acá; quitar aria-disabled. -->
+        <li><a role="link" aria-disabled="true">Elenco</a></li>
         <li><a href="#lugar">Dónde es</a></li>
         <li data-antes><a href="#antes">Antes de ir</a></li>
         <li><a href="#preguntas">Preguntas</a></li>
@@ -666,8 +676,9 @@ footer{
       <div class="hero-inner">
         <p class="kicker">Una comedia en vivo</p>
         <h1 class="hero-title">Esperando <span>la carroza</span></h1>
+        <p class="author">de Jacobo Langsner</p>
         <p class="sub"><span>Viernes 6 de noviembre, 19:30.</span> <span>Escuela Técnica Canelones.</span> <span>Entrada gratuita.</span></p>
-        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva para la función">
+        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva hasta las 19:30">
           <div class="cell" data-u="d"><b>--</b><span>días</span></div>
           <div class="cell" data-u="h"><b>--</b><span>horas</span></div>
           <div class="cell" data-u="m"><b>--</b><span>min</span></div>
@@ -748,8 +759,8 @@ footer{
             <dd>Se agradece no tomar fotos durante la función, por respeto a quienes actúan y al resto del público.</dd>
           </div>
           <div>
-            <dt>Tus datos</dt>
-            <dd>Esta página no pide ni guarda datos personales: no hay registro, cuentas ni formularios.</dd>
+            <dt>Horario</dt>
+            <dd>La función empieza a las 19:30.</dd>
           </div>
         </dl>
       </div>
@@ -760,9 +771,10 @@ footer{
         <h2 class="section-title rv">Preguntas frecuentes</h2>
         <div class="rv">
           <details><summary>¿Cuánto cuesta la entrada?</summary><p>Nada. La entrada es gratuita.</p></details>
-          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026 a las 19:30, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026, a las 19:30, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿A qué hora empieza?</summary><p>A las 19:30.</p></details>
           <details><summary>¿Cómo llego?</summary><p>En la sección <a href="#lugar">¿Dónde es?</a> tocá «Cómo llegar» y se abre en tu aplicación de mapas.</p></details>
-          <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia. Esta página no pide ni guarda datos personales.</p></details>
+          <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia.</p></details>
           <details><summary>¿Puedo sacar fotos?</summary><p>Se agradece no tomar fotos durante la función.</p></details>
         </div>
       </div>
@@ -805,8 +817,8 @@ footer{
   // Datos del evento. Si cambia la fecha: acá, en el JSON-LD del <head> y en los textos del HTML.
   const EVENTO = {
     nombre: 'Esperando la carroza',
-    inicio: new Date('2026-11-06T19:30:00-03:00'),
-    duracionMin: 30,
+    inicio: new Date('2026-11-06T19:30:00-03:00'),   // inicio de la función
+    duracionMin: 30,                                 // termina a las 20:00 (solo se usa para el cierre y el calendario)
     lugar: 'Escuela Técnica Canelones, José Enrique Rodó 614, Canelones, Uruguay',
     descripcion: 'Comedia. Entrada gratuita. Se agradece no tomar fotos durante la función.'
   };
@@ -1025,10 +1037,12 @@ footer{
       return true;
     };
 
-    // Desde la hora de inicio: se ocultan las secciones "antes de ir". Al llegar la hora de fin (solo se usa acá
-    // y en el calendario) el contador pasa a "Gracias por asistir" y se oculta el botón de calendario.
-    function final() {
+    // Desde las 19:30 la función está en curso. Recién a la hora de fin (20:00, solo se usa acá y en el
+    // calendario) se agradece y se oculta lo que solo sirve antes de ir.
+    function terminada() {
+      cuenta.className = 'count thanks';
       cuenta.textContent = 'Gracias por asistir';
+      $$('[data-antes]').forEach(el => { el.hidden = true; });
       $$('[data-calendar]').forEach(el => { el.hidden = true; });
     }
 
@@ -1037,11 +1051,9 @@ footer{
       cuenta.className = 'count thanks';
       cuenta.removeAttribute('role');
       cuenta.removeAttribute('aria-label');
-      $$('[data-antes]').forEach(el => { el.hidden = true; });
-      const resta = EVENTO.fin - ahora();
-      if (resta <= 0) { final(); return; }
       cuenta.textContent = 'La función está en curso';
-      timer = setTimeout(final, resta);
+      const resta = EVENTO.fin - ahora();
+      if (resta <= 0) terminada(); else timer = setTimeout(terminada, resta);
     }
 
     function tick() {
