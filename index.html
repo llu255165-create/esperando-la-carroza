@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <!-- Esta página no tiene formularios ni envía datos: form-action 'none' lo impide, y connect-src 'self' solo permite pedirle la hora a su propio servidor.
        (frame-ancestors no funciona en <meta>; el anti-iframe está en el script de abajo.) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-TqEgaDJHf0nSXdbc4Z9PUCnxSnh/+U03n9y9wfZq4gQ='; style-src 'self' 'sha256-ewowTn+E24VWro3SO4gHQx4PZPSGFKqTdtEuXSsJIrA=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ydldTWZoKjkejEiyjwU7OtrXgkwF2AI2oscGFSclYVs=' 'sha256-eZmAqPH2FjRkWka5aanIeSGgslqkAGnzxFzB/UiM/rk='; style-src 'self' 'sha256-FW84MkrGsZzMLcAMqrMdtoGM6nIiAjzOQOOg4W+4+D4=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Esperando la carroza — Comedia en el teatro</title>
-  <meta name="description" content="Esperando la carroza. Comedia. Viernes 6 de noviembre de 2026, 19:30, en la Escuela Técnica Canelones. Entrada gratuita.">
+  <meta name="description" content="Esperando la carroza. Comedia. Miércoles 11 de noviembre de 2026, 11:00, en la Escuela Técnica Canelones. Entrada gratuita.">
   <meta name="theme-color" content="#2a060d">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_UY">
   <meta property="og:site_name" content="Esperando la carroza">
   <meta property="og:title" content="Esperando la carroza — Comedia en el teatro">
-  <meta property="og:description" content="Viernes 6 de noviembre de 2026, 19:30, Escuela Técnica Canelones. Entrada gratuita.">
+  <meta property="og:description" content="Miércoles 11 de noviembre de 2026, 11:00, Escuela Técnica Canelones. Entrada gratuita.">
   <meta name="twitter:card" content="summary">
   <!-- Para que WhatsApp, Instagram y otras apps muestren una imagen al compartir el enlace:
        subí una portada de 1200×630 px y activá estas líneas con la URL completa de tu sitio.
@@ -309,6 +309,7 @@ p,dd,summary{text-wrap:pretty}
   color:var(--gold-2);font-variant-numeric:tabular-nums;
 }
 .count span{display:block;margin-top:6px;font-size:.75rem;font-weight:600;color:var(--ivory-3)}
+.count .cell[hidden]{display:none!important}   /* el último día no muestra «0 días» */
 .count.thanks{
   display:block;
   font:italic 300 clamp(1.875rem,5vw,3rem)/1.1 var(--serif);color:var(--gold-2);
@@ -327,6 +328,7 @@ html:not(.js) :is([data-calendar],[data-print]){display:none}   /* sin JS no hac
   position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;
   min-height:3.125rem;padding:0 30px;
   border:1px solid transparent;border-radius:var(--radius-pill);
+  background:transparent;   /* sin esto, los <button> de contorno salían grises (fondo por defecto del navegador) */
   font:600 1rem/1.2 var(--sans);text-align:center;cursor:pointer;
   transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease,border-color .2s ease;
 }
@@ -404,6 +406,7 @@ html:not(.js) :is([data-calendar],[data-print]){display:none}   /* sin JS no hac
 .stub strong{font:300 clamp(3rem,7vw,4.75rem)/1 var(--serif);color:var(--gold-2)}
 .stub p{margin-top:6px;font-size:.9375rem;color:var(--ivory-2)}
 .stub .btn{margin-top:18px;align-self:flex-start;line-height:1.25}
+.stub .btn+.btn{margin-top:10px}
 .stub .bars{        /* código de barras decorativo */
   margin-top:20px;height:34px;opacity:.5;border-radius:2px;
   background:repeating-linear-gradient(90deg,var(--gold-2) 0 2px,transparent 2px 5px,var(--gold-2) 5px 6px,transparent 6px 11px,rgba(240,209,143,.15) 11px 13px);
@@ -516,7 +519,7 @@ footer{
   .stub::before{left:0}
   .stub::after{left:100%}
   .stub p,.stub .bars{flex-basis:100%}
-  .stub .btn{margin-top:12px}
+  .stub .btn,.stub .btn+.btn{margin-top:12px}
 }
 
 @media (max-width:720px){
@@ -610,9 +613,11 @@ footer{
     "@type": "TheaterEvent",
     "name": "Esperando la carroza",
     "description": "Comedia. Entrada gratuita.",
-    "startDate": "2026-11-06T19:30:00-03:00",
-    "endDate": "2026-11-06T20:00:00-03:00",
+    "startDate": "2026-11-11T11:00:00-03:00",
+    "endDate": "2026-11-11T11:30:00-03:00",
     "eventStatus": "https://schema.org/EventScheduled",
+    "isAccessibleForFree": true,
+    "inLanguage": "es",
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "location": {
       "@type": "Place",
@@ -674,11 +679,11 @@ footer{
     <section class="hero" id="inicio">
       <canvas id="polvo" aria-hidden="true"></canvas>
       <div class="hero-inner">
-        <p class="kicker">Una comedia en vivo</p>
+        <p class="kicker" id="kicker">Una comedia en vivo</p>
         <h1 class="hero-title">Esperando <span>la carroza</span></h1>
         <p class="author">de Jacobo Langsner</p>
-        <p class="sub"><span>Viernes 6 de noviembre, 19:30.</span> <span>Escuela Técnica Canelones.</span> <span>Entrada gratuita.</span></p>
-        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva hasta las 19:30">
+        <p class="sub"><span>Miércoles 11 de noviembre, 11:00.</span> <span>Escuela Técnica Canelones.</span> <span>Entrada gratuita.</span></p>
+        <div class="count" id="cuenta" role="timer" aria-label="Cuenta regresiva hasta las 11:00">
           <div class="cell" data-u="d"><b>--</b><span>días</span></div>
           <div class="cell" data-u="h"><b>--</b><span>horas</span></div>
           <div class="cell" data-u="m"><b>--</b><span>min</span></div>
@@ -694,16 +699,16 @@ footer{
     <div class="marquee" aria-hidden="true">
       <div class="track">
         <div class="group">
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
         </div>
         <div class="group">
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
-          <span>Comedia  ✦  Entrada gratuita  ✦  Viernes 6 de noviembre  ✦  19:30  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
+          <span>Comedia  ✦  Entrada gratuita  ✦  Miércoles 11 de noviembre  ✦  11:00  ✦  Escuela Técnica Canelones  ✦  </span>
         </div>
       </div>
     </div>
@@ -716,9 +721,9 @@ footer{
           <div class="main">
             <p class="t-title">Esperando la carroza</p>
             <dl class="ticket-data">
-              <div><dt>Día</dt><dd>Viernes</dd></div>
-              <div><dt>Fecha</dt><dd><time datetime="2026-11-06">6 de noviembre de 2026</time></dd></div>
-              <div><dt>Hora</dt><dd><time datetime="19:30">19:30</time></dd></div>
+              <div><dt>Día</dt><dd>Miércoles</dd></div>
+              <div><dt>Fecha</dt><dd><time datetime="2026-11-11T11:00-03:00">11 de noviembre de 2026</time></dd></div>
+              <div><dt>Hora</dt><dd><time datetime="2026-11-11T11:00-03:00">11:00</time></dd></div>
               <div><dt>Lugar</dt><dd>Escuela Técnica Canelones</dd></div>
             </dl>
           </div>
@@ -727,6 +732,7 @@ footer{
             <strong>Gratis</strong>
             <p data-antes>Sin registro previo.</p>
             <button class="btn btn--line btn--sm" type="button" data-calendar>Agregar al calendario</button>
+            <button class="btn btn--line btn--sm" type="button" data-share hidden>Compartir</button>
             <div class="bars" aria-hidden="true"></div>
           </div>
         </div>
@@ -760,7 +766,7 @@ footer{
           </div>
           <div>
             <dt>Horario</dt>
-            <dd>La función empieza a las 19:30.</dd>
+            <dd>La función empieza a las 11:00 de la mañana. Conviene llegar unos minutos antes para ubicarse con calma.</dd>
           </div>
         </dl>
       </div>
@@ -771,8 +777,8 @@ footer{
         <h2 class="section-title rv">Preguntas frecuentes</h2>
         <div class="rv">
           <details><summary>¿Cuánto cuesta la entrada?</summary><p>Nada. La entrada es gratuita.</p></details>
-          <details><summary>¿Cuándo y dónde es?</summary><p>El viernes 6 de noviembre de 2026, a las 19:30, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
-          <details><summary>¿A qué hora empieza?</summary><p>A las 19:30.</p></details>
+          <details><summary>¿Cuándo y dónde es?</summary><p>El miércoles 11 de noviembre de 2026, a las 11:00, en la Escuela Técnica Canelones, José Enrique Rodó 614, Canelones.</p></details>
+          <details><summary>¿A qué hora empieza?</summary><p>A las 11:00 de la mañana. Conviene llegar unos minutos antes.</p></details>
           <details><summary>¿Cómo llego?</summary><p>En la sección <a href="#lugar">¿Dónde es?</a> tocá «Cómo llegar» y se abre en tu aplicación de mapas.</p></details>
           <details><summary>¿Tengo que anotarme?</summary><p>No. La entrada es gratuita y no hace falta registrarse ni confirmar asistencia.</p></details>
           <details><summary>¿Puedo sacar fotos?</summary><p>Se agradece no tomar fotos durante la función.</p></details>
@@ -785,24 +791,26 @@ footer{
   <div class="ficha">
     <p class="ficha-kicker">Comedia · Entrada gratuita</p>
     <p class="ficha-title">Esperando la carroza</p>
-    <p class="ficha-line"><b>Fecha</b>Viernes 6 de noviembre de 2026</p>
-    <p class="ficha-line"><b>Hora</b>19:30</p>
+    <p class="ficha-line"><b>Fecha</b>Miércoles 11 de noviembre de 2026</p>
+    <p class="ficha-line"><b>Hora</b>11:00</p>
     <p class="ficha-line"><b>Lugar</b>Escuela Técnica Canelones<br>José Enrique Rodó 614, Canelones, Uruguay</p>
     <p class="ficha-note">Se agradece no tomar fotos durante la función.</p>
   </div>
 
   <footer>
     <p class="foot-brand">Esperando la carroza</p>
-    <p>Comedia · Viernes 6 de noviembre de 2026, 19:30 · Entrada gratuita</p>
+    <p>Comedia · Miércoles 11 de noviembre de 2026, 11:00 · Entrada gratuita</p>
     <nav class="fnav" aria-label="Secundaria">
       <a href="#inicio">Inicio</a>
       <a href="#funcion">Función</a>
       <a href="#lugar">Dónde es</a>
       <a href="#antes" data-antes>Antes de ir</a>
       <a href="#preguntas">Preguntas</a>
+      <button type="button" data-share hidden>Compartir</button>
       <button type="button" data-print>Imprimir ficha</button>
     </nav>
   </footer>
+  <p class="sr-only" id="aviso" role="status" aria-live="polite"></p>
 
   <script>
 (() => {
@@ -811,14 +819,14 @@ footer{
   /* ==========================================================================
      ESPERANDO LA CARROZA · comportamiento
      1 Intro · 2 Arrancar arriba · 3 Progreso y sección activa · 4 Menú móvil
-     5 Revelado · 6 Portada (foco y polvo) · 7 Cuenta regresiva · 8 Calendario
+     5 Revelado · 6 Portada (foco y polvo) · 7 Cuenta regresiva · 8 Calendario · 9 Compartir
      ========================================================================== */
 
   // Datos del evento. Si cambia la fecha: acá, en el JSON-LD del <head> y en los textos del HTML.
   const EVENTO = {
     nombre: 'Esperando la carroza',
-    inicio: new Date('2026-11-06T19:30:00-03:00'),   // inicio de la función
-    duracionMin: 30,                                 // termina a las 20:00 (solo se usa para el cierre y el calendario)
+    inicio: new Date('2026-11-11T11:00:00-03:00'),   // inicio de la función
+    duracionMin: 30,                                 // termina a las 11:30 (solo se usa para el cierre y el calendario)
     lugar: 'Escuela Técnica Canelones, José Enrique Rodó 614, Canelones, Uruguay',
     descripcion: 'Comedia. Entrada gratuita. Se agradece no tomar fotos durante la función.'
   };
@@ -829,6 +837,9 @@ footer{
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasIO = 'IntersectionObserver' in window;
+
+  // Cada parte corre aislada: si algo falla en un navegador viejo, el resto de la página sigue funcionando
+  const parte = fn => { try { fn(); } catch (e) { if (window.console) console.error(e); } };
 
   /* Tipografías: se piden sin bloquear la primera pantalla (sin atributo onload, que la política de seguridad no admite) */
   $$('link[rel="stylesheet"][media="print"]').forEach(l => {
@@ -844,19 +855,19 @@ footer{
   /* 1 · Intro ---------------------------------------------------------------
      El telón se ve completo la primera vez de cada sesión (el <head> ya marcó
      "sin-intro" si es una recarga). Se puede saltar con un toque o una tecla. */
-  (() => {
+  parte(() => {
     try { sessionStorage.setItem('intro-vista', '1'); } catch (e) { /* modo privado */ }
     if (root.classList.contains('sin-intro')) return;
     const saltar = () => { if (performance.now() < 3300) root.classList.add('sin-intro'); };
     ['pointerdown', 'keydown'].forEach(t => addEventListener(t, saltar, { passive: true, once: true }));
-  })();
+  });
 
 
   /* 2 · Arrancar arriba -----------------------------------------------------
      Algunos navegadores restauran el scroll tarde y se salta la portada.
      Se corrige solo durante los primeros segundos y hasta que la persona
      interactúa, para no pelear con lectores de pantalla ni con el uso normal. */
-  (() => {
+  parte(() => {
     if (location.hash) return;                       // respeta los enlaces con ancla
     let activo = true;
     const arriba = () => {
@@ -869,11 +880,11 @@ footer{
     addEventListener('pageshow', arriba);
     arriba();
     setTimeout(parar, 3400);
-  })();
+  });
 
 
   /* 3 · Progreso y sección activa ------------------------------------------ */
-  (() => {
+  parte(() => {
     const barra = $('#progreso');
     let max = 0, esperando = false;
     const pintar = () => {
@@ -905,11 +916,11 @@ footer{
       });
     }, { rootMargin: '-45% 0px -54% 0px' });
     secciones.forEach(s => io.observe(s));
-  })();
+  });
 
 
   /* 4 · Menú móvil ----------------------------------------------------------- */
-  (() => {
+  parte(() => {
     const barra = $('#barra'), btn = $('.menu-btn'), menu = $('#menu');
     if (!barra || !btn || !menu) return;
     const abierto = () => btn.getAttribute('aria-expanded') === 'true';
@@ -920,23 +931,25 @@ footer{
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && abierto()) { abrir(false); btn.focus(); }
     });
-    matchMedia('(min-width: 561px)').addEventListener('change', e => { if (e.matches) abrir(false); });
-  })();
+    const ancho = matchMedia('(min-width: 561px)');
+    const alCambiar = e => { if (e.matches) abrir(false); };
+    if (ancho.addEventListener) ancho.addEventListener('change', alCambiar); else if (ancho.addListener) ancho.addListener(alCambiar);
+  });
 
 
   /* 5 · Revelado al hacer scroll -------------------------------------------- */
-  (() => {
+  parte(() => {
     const items = $$('.rv');
     if (!hasIO) { items.forEach(el => el.classList.add('vis')); return; }
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
     }), { threshold: .12 });
     items.forEach(el => io.observe(el));
-  })();
+  });
 
 
   /* 6 · Portada: foco de luz y polvo dorado --------------------------------- */
-  (() => {
+  parte(() => {
     const hero = $('#inicio');
 
     // El foco sigue al puntero moviendo solo un transform (sin repintar el degradado)
@@ -989,7 +1002,7 @@ footer{
     const parar = () => { cancelAnimationFrame(raf); raf = 0; };
     if (hasIO) new IntersectionObserver(([e]) => (e.isIntersecting ? iniciar() : parar())).observe(c);
     else iniciar();
-  })();
+  });
 
 
   /* 7 · Cuenta regresiva y cierre -------------------------------------------
@@ -997,9 +1010,16 @@ footer{
      solo escribe en el DOM lo que cambió. Al empezar la función se oculta lo
      que solo sirve antes de ir (lo marcado con data-antes). */
   const cuenta = $('#cuenta');
-  (() => {
+  parte(() => {
     const celdas = {};
-    $$('.cell', cuenta).forEach(c => { celdas[c.dataset.u] = { num: $('b', c), etiqueta: $('span', c) }; });
+    const htmlCeldas = cuenta.innerHTML, etiquetaCuenta = cuenta.getAttribute('aria-label');
+    const leerCeldas = () => $$('.cell', cuenta).forEach(c => { celdas[c.dataset.u] = { celda: c, num: $('b', c), etiqueta: $('span', c) }; });
+    leerCeldas();
+    const kicker = $('#kicker');
+    const kickerBase = kicker ? kicker.textContent : '';
+    const DIA = 86400000, UY = -3 * 3600000;            // Uruguay: UTC−3 todo el año
+    const diaUY = t => Math.floor((t + UY) / DIA);
+    let empezo = false;
     const dos = n => (n < 10 ? '0' + n : String(n));
     let timer;
 
@@ -1037,7 +1057,7 @@ footer{
       return true;
     };
 
-    // Desde las 19:30 la función está en curso. Recién a la hora de fin (20:00, solo se usa acá y en el
+    // Desde las 11:00 la función está en curso. Recién a la hora de fin (11:30, solo se usa acá y en el
     // calendario) se agradece y se oculta lo que solo sirve antes de ir.
     function terminada() {
       cuenta.className = 'count thanks';
@@ -1047,7 +1067,9 @@ footer{
     }
 
     function iniciada() {
+      empezo = true;
       clearTimeout(timer);
+      if (kicker) kicker.textContent = kickerBase;
       cuenta.className = 'count thanks';
       cuenta.removeAttribute('role');
       cuenta.removeAttribute('aria-label');
@@ -1058,9 +1080,24 @@ footer{
 
     function tick() {
       const ms = EVENTO.inicio - ahora();
-      if (ms <= 0) { iniciada(); return; }
+      if (ms <= 0) { if (!empezo) iniciada(); return; }
+      if (empezo) {
+        // El reloj del dispositivo estaba adelantado y el del servidor dice que todavía falta: se vuelve a la cuenta
+        empezo = false; clearTimeout(timer);
+        cuenta.className = 'count'; cuenta.innerHTML = htmlCeldas;
+        cuenta.setAttribute('role', 'timer'); cuenta.setAttribute('aria-label', etiquetaCuenta);
+        $$('[data-antes]').forEach(el => { el.hidden = false; });
+        $$('[data-calendar]').forEach(el => { el.hidden = false; });
+        leerCeldas();
+      }
+      if (kicker) {
+        const faltan = diaUY(EVENTO.inicio.getTime()) - diaUY(ahora());
+        const k = faltan === 0 ? '¡Es hoy! · ' + kickerBase : faltan === 1 ? '¡Es mañana! · ' + kickerBase : kickerBase;
+        if (kicker.textContent !== k) kicker.textContent = k;
+      }
       const t = Math.floor(ms / 1000);
       const d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600), m = Math.floor(t % 3600 / 60), s = t % 60;
+      celdas.d.celda.hidden = d === 0;
       fijar('d', String(d), d === 1 ? 'día' : 'días');
       fijar('h', dos(h), h === 1 ? 'hora' : 'horas');
       fijar('m', dos(m), 'min');
@@ -1074,11 +1111,16 @@ footer{
     }
     tick();
     sincronizar();
-  })();
+    // Al volver a la pestaña (o despertar el celular) se corrige al instante y se vuelve a sincronizar
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) return;
+      clearTimeout(timer); tick(); sincronizar();
+    });
+  });
 
 
   /* 8 · Calendario (.ics) ---------------------------------------------------- */
-  (() => {
+  parte(() => {
     const fechaICS = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const escICS = t => t.replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;');
     const enc = new TextEncoder();
@@ -1095,7 +1137,7 @@ footer{
     function descargar() {
       const lineas = [
         'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Esperando la carroza//ES', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
-        'UID:esperando-la-carroza-20261106@obra',
+        'UID:esperando-la-carroza-20261111@obra',
         'DTSTAMP:' + fechaICS(new Date()),
         'DTSTART:' + fechaICS(EVENTO.inicio),
         'DTEND:' + fechaICS(EVENTO.fin),
@@ -1103,8 +1145,8 @@ footer{
         'LOCATION:' + escICS(EVENTO.lugar),
         'DESCRIPTION:' + escICS(EVENTO.descripcion),
         'STATUS:CONFIRMED',
-        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Mañana a las 19:30: ' + EVENTO.nombre), 'END:VALARM',
-        'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Hoy a las 19:30: ' + EVENTO.nombre), 'END:VALARM',
+        'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Mañana a las 11:00: ' + EVENTO.nombre), 'END:VALARM',
+        'BEGIN:VALARM', 'TRIGGER:-PT1H', 'ACTION:DISPLAY', 'DESCRIPTION:' + escICS('Hoy a las 11:00: ' + EVENTO.nombre), 'END:VALARM',
         'END:VEVENT', 'END:VCALENDAR'
       ].map(plegar).join('\r\n') + '\r\n';
       const url = URL.createObjectURL(new Blob([lineas], { type: 'text/calendar;charset=utf-8' }));
@@ -1114,7 +1156,41 @@ footer{
     }
     $$('[data-calendar]').forEach(b => b.addEventListener('click', descargar));
     $$('[data-print]').forEach(b => b.addEventListener('click', () => window.print()));
-  })();
+  });
+
+
+  /* 9 · Compartir -----------------------------------------------------------
+     Usa el menú de compartir del celular (WhatsApp, Instagram…); en la
+     computadora copia el texto con el enlace. Solo aparece si la página está publicada. */
+  parte(() => {
+    if (!/^https?:$/.test(location.protocol)) return;
+    const puedeCompartir = !!navigator.share;
+    const puedeCopiar = !!(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext);
+    if (!puedeCompartir && !puedeCopiar) return;
+    const aviso = $('#aviso');
+    const url = location.origin + location.pathname;
+    const texto = EVENTO.nombre + ' — comedia. Miércoles 11 de noviembre, 11:00, en la Escuela Técnica Canelones. Entrada gratuita.';
+    $$('[data-share]').forEach(b => {
+      const original = b.textContent;
+      let vuelta;
+      const avisar = msg => {
+        b.textContent = msg;
+        if (aviso) aviso.textContent = msg;
+        clearTimeout(vuelta);
+        vuelta = setTimeout(() => { b.textContent = original; if (aviso) aviso.textContent = ''; }, 2400);
+      };
+      b.hidden = false;
+      b.addEventListener('click', async () => {
+        if (puedeCompartir) {
+          try { await navigator.share({ title: EVENTO.nombre, text: texto, url }); return; }
+          catch (e) { if (e && e.name === 'AbortError') return; }   // la persona canceló
+        }
+        if (!puedeCopiar) return;
+        try { await navigator.clipboard.writeText(texto + ' ' + url); avisar('¡Enlace copiado!'); }
+        catch (e) { avisar('No se pudo copiar'); }
+      });
+    });
+  });
 
 })();
   </script>
